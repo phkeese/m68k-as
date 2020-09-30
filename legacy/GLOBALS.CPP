@@ -97,4 +97,3 @@ int mapROMStart, mapROMEnd;
 int mapReadStart, mapReadEnd;
 int mapProtectedStart, mapProtectedEnd;
 int mapInvalidStart, mapInvalidEnd;
-

@@ -8,3 +8,5 @@
 #include <string>
 
 using AnsiString = std::string;
+using String = std::string;
+using TColor = int;
