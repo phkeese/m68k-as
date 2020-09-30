@@ -151,7 +151,7 @@ extern bool mapInvalid;
 
 extern stack<int,vector<int> > stcStack;
 extern stack<char, vector<char> > dbStack;
-extern stack<String, vector<String>> forStack;
+extern stack<String, vector<String> > forStack;
 
 //------------------------------------------------------------
 // Assemble source file
