@@ -9,7 +9,7 @@ build/ASSEMBLE.O: legacy/ASSEMBLE.CPP
 	$(COMPILE) -o $@ $^ -c
 
 
-build/vcl.o: legacy/vcl.o
+build/vcl.o: legacy/vcl.cpp
 	$(COMPILE) -o $@ $^ -c
 
 
