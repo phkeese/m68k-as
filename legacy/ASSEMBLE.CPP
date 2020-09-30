@@ -173,18 +173,19 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
       return SEVERE;
     }
 
-    // if generate listing is checked then create .L68 file
-    if (Options->chkGenList->Checked) {
-      outName = ChangeFileExt(workName, ".L68");
-      initList(outName.c_str());                // initialize list file
-    }
+    // Unused export options
+    // // if generate listing is checked then create .L68 file
+    // if (Options->chkGenList->Checked) {
+    //   outName = ChangeFileExt(workName, ".L68");
+    //   initList(outName.c_str());                // initialize list file
+    // }
 
-    // if Object file flag then create .S68 file (S-Record)
-    if (objFlag) {
-      outName = ChangeFileExt(workName, ".S68");
-      if(initObj(outName.c_str()) != NORMAL)     // if error initializing object file
-        objFlag = false;                        // disable object file creation
-    }
+    // // if Object file flag then create .S68 file (S-Record)
+    // if (objFlag) {
+    //   outName = ChangeFileExt(workName, ".S68");
+    //   if(initObj(outName.c_str()) != NORMAL)     // if error initializing object file
+    //     objFlag = false;                        // disable object file creation
+    // }
 
     // Assemble the file
     processFile();
@@ -205,20 +206,6 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
       dbStack.pop();
     while(forStack.empty() == false)
       forStack.pop();
-
-    // minimize message area if no errors or warnings
-    if (warningCount == 0 && errorCount == 0) {
-      TTextStuff *Active = (TTextStuff*)Main->ActiveMDIChild; //grab active mdi child
-        Active->Messages->Height = 7;
-    }
-
-    AssemblerBox->lblStatus->Caption = IntToStr(warningCount);
-    AssemblerBox->lblStatus2->Caption = IntToStr(errorCount);
-
-    if(errorCount == 0 && errorCount == 0)
-    {
-      AssemblerBox->cmdExecute->Enabled = true;
-    }
   }
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'assembleFile'. \n");
