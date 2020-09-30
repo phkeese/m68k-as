@@ -20,10 +20,10 @@
 /* include system header files for prototype checking */
 #include <stdio.h>
 #include <string.h>
-#include <system.hpp>
-#include <process.h>
+// #include <system.hpp>
+// #include <process.h>
 #include <stdlib.h>
-#include <malloc.h>
+// #include <malloc.h>
 #include <vcl.h>
 
 /* Define a couple of useful tests */
