@@ -21,4 +21,9 @@ struct Application_Struct {
 	void (*MessageBox)(String, String, int);
 };
 
+
 extern struct Application_Struct *Application;
+
+
+// Compare two string, ignore capitalization 
+int stricmp(char *a, char *b);

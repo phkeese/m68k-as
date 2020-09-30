@@ -34,6 +34,7 @@ char buffer[256];       // used to form messages for display in windows (ck)
 char numBuf[20];        // "
 int errorCount, warningCount;	// Number of errors and warnings
 char empty[] = "";      // empty string, used in conditional assembly
+char *empty_string = "";
 unsigned int startAddress;     // starting address of program
 char globalLabel[SIGCHARS+1];   // used to build unique global label from local label
 int includeNestLevel;    // count nested include directives

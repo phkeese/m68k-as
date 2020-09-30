@@ -94,6 +94,7 @@ extern bool pass2;		// Flag set during second pass
 extern bool endFlag;		// Flag set when the END directive is encountered
 extern bool continuation;	// TRUE if the listing line is a continuation
 extern char empty[];            // used in conditional assembly
+extern char *empty_string;
 
 extern int lineNum;
 extern int lineNumL68;
@@ -371,7 +372,7 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFC -----
     if(!(stricmp(token[1], "IFC"))) {       // if IFC opcode
-      if (token[0] != empty)                // if label present
+      if (token[0] != empty_string)                // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                        // nest level of skip
@@ -385,12 +386,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFNC -----
     } else if(!(stricmp(token[1], "IFNC"))) { // if IFNC opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[3] == empty) {                // if IFNC arguments missing
+        if (token[3] == empty_string) {                // if IFNC arguments missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           if (!(stricmp(token[2], token[3]))) { // if IFNC strings match
@@ -403,12 +404,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFEQ -----
     } else if(!(stricmp(token[1], "IFEQ"))) { // if IFEQ opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -422,12 +423,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFNE -----
     } else if(!(stricmp(token[1], "IFNE"))) {  // if IFNE opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -441,12 +442,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFLT -----
     } else if(!(stricmp(token[1], "IFLT"))) {  // if IFLT opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -460,12 +461,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFLE -----
     } else if(!(stricmp(token[1], "IFLE"))) {  // if IFLE opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -479,12 +480,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFGT -----
     } else if(!(stricmp(token[1], "IFGT"))) {  // if IFGT opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -498,12 +499,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFGE -----
     } else if(!(stricmp(token[1], "IFGE"))) {  // if IFGE opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -517,7 +518,7 @@ int assemble(char *line, int *errorPtr)
 
     // ----- ENDC -----
     } else if(!(stricmp(token[1], "ENDC"))) {  // if ENDC opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (nestLevel > 0)
         nestLevel--;                          // decrease nesting level
@@ -815,7 +816,7 @@ int tokenize(char* instr, char* delim, char *token[], char* tokens){
   dotDelimiter = (strchr(delim, '.'));  // set true if . is a delimiter
   // clear token pointers
   for (i=0; i<MAXT; i++) {
-    token[i] = empty;           // this makes the pointer point to empty
+    token[i] = empty_string;           // this makes the pointer point to empty
     tokenEnd[i] = NULL;         // clear positions
   }
 
