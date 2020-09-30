@@ -1,5 +1,5 @@
 CC = c++
-CFLAGS = -std=c++11
+CFLAGS = -std=c++98
 WARN = -Wall -Wextra
 INCLUDE = -Ilegacy/include
 COMPILE = $(CC) $(CFLAGS) $(WARN) $(INCLUDE)
