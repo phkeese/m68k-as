@@ -4,3 +4,7 @@
 */
 
 #pragma once
+
+#include <string>
+
+using AnsiString = std::string;

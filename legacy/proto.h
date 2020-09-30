@@ -199,4 +199,3 @@ int listOn(int, char *, char *, int *);
 int listOff(int, char *, char *, int *);
 
 int memory(int, char *, char *, int *);
-
