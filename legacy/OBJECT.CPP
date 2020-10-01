@@ -365,4 +365,3 @@ int finishObj()
   return NORMAL;
 }
 
-
