@@ -41,6 +41,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "asm.h"
+#include <cstdlib>
 
 extern char line[256];		// Source line
 extern FILE *inFile;            // source file
