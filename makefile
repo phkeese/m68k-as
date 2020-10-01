@@ -2,7 +2,8 @@ CC = c++
 STD = -std=c++98
 WARN = -Wall
 INCLUDE = -Ilegacy/include
-CFLAGS = $(WARN) $(INCLUDE) $(STD)
+DEBUG = -glldb
+CFLAGS = $(WARN) $(INCLUDE) $(STD) $(DEBUG)
 COMPILE = $(CC) $(CFLAGS) -c
 LINK = $(CC) $(WARN) 
 OBJ = main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O     \
@@ -20,12 +21,12 @@ OBJ = main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O     \
 	$(COMPILE) -o $@ $^
 
 
-build/m68-as: $(OBJ)
+build/m68k-as: $(OBJ)
 	$(LINK) -o $@ $^
 
 
-run: build/m68-as
-	build/m68-as result/tutorial4.X68 temp.out tutorial4
+run: build/m68k-as
+	build/m68k-as result/tutorial4.X68 temp.out tutorial4
 
 
 .PHONY: clean
