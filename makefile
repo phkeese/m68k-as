@@ -26,6 +26,4 @@ run: build/m68-as
 
 .PHONY: clean
 clean:
-	rm *.o
-	rm legacy/*.o
-	rm build/*
+	rm -f $(OBJ)
