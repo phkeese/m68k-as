@@ -31,7 +31,8 @@ extern struct Application_Struct *Application;
 
 // Compare two string, ignore capitalization 
 int stricmp(const char *a, const char *b);
-
+// Because strncmpi *had* to exist
+#define strcmpi stricmp
 
 // Compare two string up to n characters, ignore capitalization
 int strnicmp(const char *a, const char *b, int n);
