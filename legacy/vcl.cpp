@@ -67,3 +67,9 @@ AnsiString IntToHex(int s, int digits) {
 	ss << s;
 	return ss.str();
 }
+
+
+// Convert char to String
+String to_string(char c) {
+	return String(1,c);
+}
