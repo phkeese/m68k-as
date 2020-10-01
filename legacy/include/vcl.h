@@ -35,3 +35,7 @@ int stricmp(const char *a, const char *b);
 
 // Compare two string up to n characters, ignore capitalization
 int strnicmp(const char *a, const char *b, int n);
+
+
+// Convert AnsiString to Integer
+int StrToInt(const AnsiString S);
