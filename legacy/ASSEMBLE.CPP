@@ -555,10 +555,11 @@ int assemble(char *line, int *errorPtr)
       printError(listFile, *errorPtr, lineNum);
       if (printCond && !skipList)
       {
-        listCond(skipCond);
-        listLine(line, lineIdent);
-      } else if ( (listFlag && (!skipCond && !skipList)) || *errorPtr > WARNING)
-        listLine(line, lineIdent);
+        // listCond(skipCond);
+        // listLine(line, lineIdent);
+      } else if ( (listFlag && (!skipCond && !skipList)) || *errorPtr > WARNING) {
+        // listLine(line, lineIdent);
+      }
     }
 
   }
