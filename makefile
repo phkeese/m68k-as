@@ -25,7 +25,7 @@ build/m68-as: $(OBJ)
 
 
 run: build/m68-as
-	build/m68-as
+	build/m68-as hello_world.X68 temp.out MyWork
 
 
 .PHONY: clean
