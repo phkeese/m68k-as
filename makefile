@@ -5,8 +5,10 @@ INCLUDE = -Ilegacy/include
 CFLAGS = $(WARN) $(INCLUDE) $(STD)
 COMPILE = $(CC) $(CFLAGS) -c
 LINK = $(CC) $(WARN) 
-OBJ = main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O legacy/GLOBALS.O \
-	legacy/ERROR.O legacy/SYMBOL.O legacy/EVAL.O legacy/OPPARSE.O
+OBJ = main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O     \
+	legacy/GLOBALS.O legacy/ERROR.O legacy/SYMBOL.O legacy/EVAL.O \
+	legacy/OPPARSE.O legacy/MACRO.O
+
 
 %.o: %.cpp
 	$(COMPILE) -o $@ $^
