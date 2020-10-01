@@ -1,4 +1,4 @@
-# m68k-as - Extracting the assembler from Edit68K and making it compile with clang
+# m68k-as - Extracting the assembler from Edit68K
 
 The Easy68K toolchain is amazing, but it does not run natively on linux and mac.
 The first step to change that is to extract the core functionality from the old
