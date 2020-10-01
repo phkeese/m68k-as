@@ -9,8 +9,8 @@
 
  ************************************************************************/
 
-#include <stack.h>
-#include <vector.h>
+#include <stack>
+#include <vector>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -64,11 +64,11 @@ const int LAST_TOKEN = 11;      // highest token possible of structure
 AnsiString stcLabel;
 
 // Make a stack using a vector container
-stack<int,vector<int> > stcStack;
+std::stack<int, std::vector<int> > stcStack;
 // Make a stack for saving dbloop register number
-stack<char, vector<char> > dbStack;
+std::stack<char, std::vector<char> > dbStack;
 // Make a stack for saving FOR arguments
-stack<String, vector<String> > forStack;
+std::stack<String, std::vector<String> > forStack;
 
 // This table contains the branch condition codes to use for the different
 // conditional expressions.
