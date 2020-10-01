@@ -232,7 +232,7 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
 }
 
 
-int strcap(char *d, char *s)
+int strcap(char *d, const char *s)
 {
   bool capFlag;
 
@@ -354,7 +354,7 @@ int processFile()
 }
 
 // Conditionally Assemble one line of code
-int assemble(char *line, int *errorPtr)
+int assemble(const char *line, int *errorPtr)
 {
   int value = 0;
   bool backRef = false;

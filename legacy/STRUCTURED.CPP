@@ -726,7 +726,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
   return NORMAL;
 }
 
-void assembleStc(char* line)
+void assembleStc(const char* line)
 {
   int error = OK;
   int i=0;
