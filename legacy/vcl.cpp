@@ -26,9 +26,17 @@ int stricmp(const char *a, const char *b) {
 	while (*a && (toupper(*a) == toupper(*b))) {
 		a++;
 		b++;
-		}
-	return *(const unsigned char*)a - *(const unsigned char*)b;
 	}
-
 	return *(const unsigned char*)a - *(const unsigned char*)b;
+}
+
+
+// Compare two string up to n characters, ignore capitalization
+int strnicmp(const char *a, const char *b, int n) {
+	while (n--) {
+		if (toupper(*a++) != toupper(*b++)) {
+			return (unsigned char)toupper(*a) - (unsigned char)toupper(*b);
+		}
+	}
+	return 0;
 }
