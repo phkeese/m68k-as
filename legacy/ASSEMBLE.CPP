@@ -207,6 +207,20 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
       dbStack.pop();
     while(forStack.empty() == false)
       forStack.pop();
+
+    //   // minimize message area if no errors or warnings
+    // if (warningCount == 0 && errorCount == 0) {
+    //   TTextStuff *Active = (TTextStuff*)Main->ActiveMDIChild; //grab active mdi child
+    //     Active->Messages->Height = 7;
+    // }
+
+    // AssemblerBox->lblStatus->Caption = IntToStr(warningCount);
+    // AssemblerBox->lblStatus2->Caption = IntToStr(errorCount);
+
+    // if(errorCount == 0 && errorCount == 0)
+    // {
+    //   AssemblerBox->cmdExecute->Enabled = true;
+    // }
   }
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'assembleFile'. \n");
