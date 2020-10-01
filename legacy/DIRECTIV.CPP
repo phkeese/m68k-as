@@ -822,7 +822,7 @@ int incbin(int size, char *label, char *fileName, int *errorPtr)
       // On pass 2, output the block of values directly
       // to the object and binary files (without putting them in the listing)
       if (pass2) {
-        if (/*objFlag*/ true)
+        if (objFlag)
           outputObj(loc, dataByte, BYTE_SIZE);
       }
       loc++;            // increment location counter once for each byte in file

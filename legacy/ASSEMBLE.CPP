@@ -182,7 +182,7 @@ int assembleFile(const char fileName[], const char tempName[], const AnsiString 
     // }
 
     // if Object file flag then create .S68 file (S-Record)
-    if (/*objFlag*/true) {
+    if (objFlag) {
       outName = workName + ".S68";
       if(initObj(outName.c_str()) != NORMAL)     // if error initializing object file
         objFlag = false;                        // disable object file creation
@@ -195,7 +195,7 @@ int assembleFile(const char fileName[], const char tempName[], const AnsiString 
     fclose(inFile);
     fclose(tmpFile);
     // finishList();
-    if (/*objFlag*/true)
+    if (objFlag)
       finishObj();
 
     clearSymbols();               //ck clear symbol table memory
@@ -376,11 +376,12 @@ int assemble(const char *line, int *errorPtr)
     else
       comment = false;
 
-    if (comment)                                // if comment
+    if (comment) {                               // if comment
       // if (pass2 && listFlag) {
       //   listLine(line, lineIdent);
       //   return NORMAL;
       // }
+      }
 
     // conditional assembly for all code
 
