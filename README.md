@@ -10,14 +10,37 @@ S-Record files, like Edit68K does.
 
 ## Overview of what needs to be done:
 
-- [ ] Provide substitute classes and functions to compile assembler
+- [x] Provide substitute classes and functions to compile assembler
+- [ ] Reimplement listing file
 - [ ] Remove unused code (mostly UI)
 - [ ] Remove all references to UI code
-- [ ] Rewrite to C++11 and decouple assembler from files
+- [ ] Rewrite to C++11 and decouple assembler from file streams
 
 
 
 At the end, we should hopefully end up with a library and a frontend for it to assemble code.
+
+
+
+
+
+## Usage
+
+To compile the assembler:
+
+```bash
+make build/m68k-as
+```
+
+To assemble a program:
+
+```bash
+build/m68k-as <source> <temp file> <workname>
+```
+
+This will generate two files, `<work name>.S68` with the assembled code and `<temp file>` in the current directory. 
+
+The temporary can be deleted.
 
 ---
 
