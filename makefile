@@ -25,7 +25,7 @@ build/m68-as: $(OBJ)
 
 
 run: build/m68-as
-	build/m68-as hello_world.X68 temp.out MyWork
+	build/m68-as result/tutorial4.X68 temp.out tutorial4
 
 
 .PHONY: clean

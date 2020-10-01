@@ -11,7 +11,7 @@
 
 
 void report_error(String message, String title, int status) {
-	std::cerr << title << ":" << status << ":" << message << std::endl;
+	std::cout << title << ":" << status << ":" << message << std::endl;
 }
 
 

@@ -69,7 +69,7 @@ int output(int	data, int size)
 {
   // if (listFlag)
   //   listObj(data, size);
-  if (objFlag)
+  if (/*objFlag*/true)
     outputObj(loc, data, size);
   return NORMAL;
 }
