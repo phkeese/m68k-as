@@ -77,9 +77,6 @@ int output(int	data, int size)
 
 int effAddr(opDescriptor *operand)
 {
-  TMsgDlgButtons temp_set; //message dialog stuff
-  temp_set << mbOK;
-
   if (operand->mode == DnDirect)
     return 0x00 | operand->reg;
 
