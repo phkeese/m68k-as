@@ -619,7 +619,7 @@ int createCode(char *capLine, int *errorPtr) {
       //   the listing before assembling an instruction
       if (loc & 1) {
         loc++;
-        listLoc();
+        // listLoc();
       }
       if (*label)
         define(label, loc, pass2, true, errorPtr);
