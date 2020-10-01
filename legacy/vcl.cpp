@@ -23,12 +23,11 @@ Application_Struct *Application;
 
 // Compare strings, ignore capitalization
 int stricmp(const char *a, const char *b) {
-	while (*a) {
-		char a_upper = toupper(*a++);
-		char b_upper = toupper(*b++);
-		if (a_upper != b_upper) {
-			break;
+	while (*a && (toupper(*a) == toupper(*b))) {
+		a++;
+		b++;
 		}
+	return *(const unsigned char*)a - *(const unsigned char*)b;
 	}
 
 	return *(const unsigned char*)a - *(const unsigned char*)b;
