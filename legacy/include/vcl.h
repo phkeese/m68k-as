@@ -11,9 +11,9 @@
 #define MB_OK 0
 
 
-using AnsiString = std::string;
-using String = std::string;
-using TColor = int;
+typedef std::string AnsiString;
+typedef std::string String;
+typedef int TColor;
 
 
 // Error reporting shim
