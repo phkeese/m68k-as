@@ -35,7 +35,7 @@ make build/m68k-as
 To assemble a program:
 
 ```bash
-build/m68k-as <source> <temp file> <workname>
+m68k-as <source> <temp file> <workname>
 ```
 
 This will generate two files, `<work name>.S68` with the assembled code and `<temp file>` in the current directory. 
