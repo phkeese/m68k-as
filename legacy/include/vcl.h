@@ -7,6 +7,10 @@
 
 #include <string>
 
+
+#define MB_OK 0
+
+
 using AnsiString = std::string;
 using String = std::string;
 using TColor = int;
