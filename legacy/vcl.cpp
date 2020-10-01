@@ -61,7 +61,7 @@ AnsiString UpperCase(AnsiString s) {
 	return new_string;
 }
 
-AnsiString IntToHex(AnsiString s) {
+AnsiString IntToHex(int s, int digits) {
 	std::stringstream ss;
 	ss << std::hex;
 	ss << s;

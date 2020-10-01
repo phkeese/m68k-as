@@ -43,4 +43,4 @@ int StrToInt(const AnsiString S);
 
 // AnsiString conversions
 AnsiString UpperCase(AnsiString s);
-AnsiString IntToHex(AnsiString s);
+AnsiString IntToHex(int value, int digits);
