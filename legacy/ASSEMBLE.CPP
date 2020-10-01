@@ -194,7 +194,7 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
     // Close files and print error and warning counts
     fclose(inFile);
     fclose(tmpFile);
-    finishList();
+    // finishList();
     if (objFlag)
       finishObj();
 
@@ -351,8 +351,8 @@ int assemble(char *line, int *errorPtr)
 
   try {
 
-    if (pass2 && listFlag)
-      listLoc();
+    // if (pass2 && listFlag)
+    //   listLoc();
 
     strcap(capLine, line);
     p = skipSpace(capLine);               // skip leading white space
@@ -363,10 +363,10 @@ int assemble(char *line, int *errorPtr)
       comment = false;
 
     if (comment)                                // if comment
-      if (pass2 && listFlag) {
-        listLine(line, lineIdent);
-        return NORMAL;
-      }
+      // if (pass2 && listFlag) {
+      //   listLine(line, lineIdent);
+      //   return NORMAL;
+      // }
 
     // conditional assembly for all code
 

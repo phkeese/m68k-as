@@ -14,7 +14,11 @@ build/vcl.o: legacy/vcl.cpp
 	$(COMPILE) -o $@ $^
 
 
-build/LISTING.O: legacy/LISTING.CPP
+build/INSTLOOK.O: legacy/INSTLOOK.CPP
+	$(COMPILE) -o $@ $^
+
+
+build/GLOBALS.O: legacy/GLOBALS.CPP
 	$(COMPILE) -o $@ $^
 
 
@@ -22,7 +26,7 @@ build/main.o: main.o
 	$(COMPILE) -o $@ $^
 
 
-build/m68-as: build/main.o build/ASSEMBLE.O build/vcl.o build/LISTING.O
+build/m68-as: build/main.o build/ASSEMBLE.O build/vcl.o build/INSTLOOK.O build/GLOBALS.O
 	$(LINK) -o $@ $^
 
 
