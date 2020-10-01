@@ -6,29 +6,24 @@ COMPILE = $(CC) $(CFLAGS) $(WARN) $(INCLUDE) -c
 LINK = $(CC) $(WARN) 
 
 
-build/ASSEMBLE.O: legacy/ASSEMBLE.CPP
+%.o: %.cpp
 	$(COMPILE) -o $@ $^
 
 
-build/vcl.o: legacy/vcl.cpp
+%.O: %.CPP
 	$(COMPILE) -o $@ $^
 
 
-build/INSTLOOK.O: legacy/INSTLOOK.CPP
-	$(COMPILE) -o $@ $^
-
-
-build/GLOBALS.O: legacy/GLOBALS.CPP
-	$(COMPILE) -o $@ $^
-
-
-build/main.o: main.o
-	$(COMPILE) -o $@ $^
-
-
-build/m68-as: build/main.o build/ASSEMBLE.O build/vcl.o build/INSTLOOK.O build/GLOBALS.O
+build/m68-as: main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O legacy/GLOBALS.O
 	$(LINK) -o $@ $^
 
 
 run: build/m68-as
 	build/m68-as
+
+
+.PHONY: clean
+clean:
+	rm *.o
+	rm legacy/*.o
+	rm build/*
