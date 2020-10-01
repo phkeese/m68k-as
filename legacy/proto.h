@@ -180,7 +180,7 @@ char	*opParse(char *, opDescriptor *, int *);
 
 symbolDef *lookup(char *, int, int *);
 
-int	hash(char *);
+int	hash_symbol(char *);
 
 symbolDef *define(char *, int, bool, bool, int *);
 

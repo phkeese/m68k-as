@@ -128,7 +128,7 @@ symbolDef *lookup(char *sym, int create, int *errorPtr)
       htable[h] = 0;
     symbolInit = true;
   }
-  h = hash(sym);
+  h = hash_symbol(sym);
   s = htable[h];
   if (s) {
     // Search the linked list for a matching symbol
@@ -212,7 +212,7 @@ int optCRE()
 //---------------------------------------------------------------------
 // Return index for array of pointers to linked lists
 // Returns 0 to MAXHASH inclusive based on first character of symbol.
-int hash(char *symbol)
+int hash_symbol(char *symbol)
 {
   if (isupper(*symbol))
     return (*symbol - 'A');
@@ -267,4 +267,3 @@ symbolDef *define(char *sym, int value, bool pass2, bool check, int *errorPtr) {
   return symbol;
 }
 
-
