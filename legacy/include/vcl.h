@@ -39,3 +39,8 @@ int strnicmp(const char *a, const char *b, int n);
 
 // Convert AnsiString to Integer
 int StrToInt(const AnsiString S);
+
+
+// AnsiString conversions
+AnsiString UpperCase(AnsiString s);
+AnsiString IntToHex(AnsiString s);
