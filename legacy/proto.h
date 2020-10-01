@@ -24,7 +24,7 @@ int	assemble(const char *, int *);
 
 int     createCode(char *, int *);
 
-int     assembleFile(char fileName[], char tempName[], AnsiString workName);
+int     assembleFile(const char fileName[], const char tempName[], const AnsiString workName);
 
 char    *fieldParse(char *p, opDescriptor *d, int *errorPtr);
 
@@ -166,7 +166,7 @@ int     optCRE();                               //ck
 
 char	*evalList(char *, unsigned short *, int *);
 
-int	initObj(char *);
+int	initObj(const char *);
 
 int	outputObj(int, int, int);
 

@@ -155,7 +155,7 @@ extern stack<String, vector<String> > forStack;
 
 //------------------------------------------------------------
 // Assemble source file
-int assembleFile(char fileName[], char tempName[], AnsiString workName)
+int assembleFile(const char fileName[], const char tempName[], const AnsiString workName)
 {
   AnsiString outName;
   int i;
@@ -181,12 +181,12 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
     //   initList(outName.c_str());                // initialize list file
     // }
 
-    // // if Object file flag then create .S68 file (S-Record)
-    // if (objFlag) {
-    //   outName = ChangeFileExt(workName, ".S68");
-    //   if(initObj(outName.c_str()) != NORMAL)     // if error initializing object file
-    //     objFlag = false;                        // disable object file creation
-    // }
+    // if Object file flag then create .S68 file (S-Record)
+    if (true) {
+      outName = workName + ".S68";
+      if(initObj(outName.c_str()) != NORMAL)     // if error initializing object file
+        objFlag = false;                        // disable object file creation
+    }
 
     // Assemble the file
     processFile();
