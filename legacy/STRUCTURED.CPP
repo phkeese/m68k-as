@@ -102,7 +102,7 @@ const char* BccCodes[BCC_COUNT][5] = {
 // returns a branch instruction
 // or is 1 on ea <cc> ea OR, 0 otherwise
 AnsiString getBcc(AnsiString cc, int mode, int or_mask) {
-  cc = cc.UpperCase();
+  cc = UpperCase(cc);
   for (int i=0; i<BCC_COUNT; i++) {
     if (cc == BccCodes[i][0])
       return BccCodes[i][mode + or_mask];
@@ -309,7 +309,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
     // IF[.B|.W|.L] op1 <cc> op2 [OR/AND[.B|.W|.L]  op3 <cc> op4] THEN
     // Ok, seriously, why does strcmpi exist, when stricmp exists?
     if (!(stricmp(token[1], "IF"))) {             // IF ?
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelI, 8);
+      stcLabel = "_" + IntToHex(stcLabelI, 8);
       tokenEnd[0] = '\0';
       for (i=3; i<=LAST_TOKEN; i++) {
         if (!(strcmp(token[i], "THEN"))) {    // find THEN
@@ -327,7 +327,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       if (!(strcmp(token[n+1], "OR"))) {    // IF <cc> OR
         stcLabel2 = stcLabel;
         stcLabelI++;
-        stcLabel = "_" + AnsiString::IntToHex(stcLabelI, 8);
+        stcLabel = "_" + IntToHex(stcLabelI, 8);
         //           .B/W/L       op3      <cc>      op4       THEN      THEN.?    label
         outCmpBcc(&token[n+2], tokenEnd, stcLabel, error);
         NEWERROR(*errorPtr, error);
@@ -336,7 +336,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       } else if (!(strcmp(token[n+3], "OR"))) { // IF ea <cc> ea OR
         stcLabel2 = stcLabel;
         stcLabelI++;
-        stcLabel = "_" + AnsiString::IntToHex(stcLabelI, 8);
+        stcLabel = "_" + IntToHex(stcLabelI, 8);
         //           .B/W/L       op3      <cc>      op4       THEN      THEN.?    label
         outCmpBcc(&token[n+4], tokenEnd, stcLabel, error);
         NEWERROR(*errorPtr, error);
@@ -376,12 +376,12 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         extent = "\t";
       }
 
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelI, 8);
+      stcLabel = "_" + IntToHex(stcLabelI, 8);
       stcLine = "\tBRA" + extent + stcLabel + "\n";
       assembleStc(stcLine.c_str());
       stcStack.push(stcLabelI);
       stcLabelI++;
-      stcLine = "_" + AnsiString::IntToHex(elseLbl, 8) + "\n";
+      stcLine = "_" + IntToHex(elseLbl, 8) + "\n";
       assembleStc(stcLine.c_str());
       skipList = true;                        // don't display this line in ASSEMBLE.CPP
     }
@@ -392,7 +392,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       stcStack.pop();
       if ((endiLbl & stcMask) != stcMaskI)        // if label is not from an IF
         NEWERROR(*errorPtr, NO_IF);
-      stcLine = "_" + AnsiString::IntToHex(endiLbl, 8) + "\n";
+      stcLine = "_" + IntToHex(endiLbl, 8) + "\n";
       assembleStc(stcLine.c_str());
       skipList = true;                        // don't display this line in ASSEMBLE.CPP
     }
@@ -401,13 +401,13 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
     // WHILE[.B|.W|.L] op1 <cc> op2 [OR/AND[.B|.W|.L]  op3 <cc> op4] DO
     // WHILE <T> D0 create infinite loop
     if (!(strcmp(token[1], "WHILE"))) {          // WHILE
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelW, 8);
+      stcLabel = "_" + IntToHex(stcLabelW, 8);
       stcLine = stcLabel + "\n";
       assembleStc(stcLine.c_str());
       stcStack.push(stcLabelW);
       stcLabelW++;
 
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelW, 8);
+      stcLabel = "_" + IntToHex(stcLabelW, 8);
       tokenEnd[0] = '\0';
       for (i=3; i<=LAST_TOKEN; i++) {
         if (!(strcmp(token[i], "DO"))) {     // if DO
@@ -424,7 +424,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         if (!(strcmp(token[n+1], "OR"))) { // WHILE <cc> OR
           stcLabel2 = stcLabel;
           stcLabelW++;
-          stcLabel = "_" + AnsiString::IntToHex(stcLabelW, 8);
+          stcLabel = "_" + IntToHex(stcLabelW, 8);
           //           .B/W/L        op3      <cc>      op4       DO       DO.?      label
           outCmpBcc(&token[n+2], tokenEnd, stcLabel, error);
           NEWERROR(*errorPtr, error);
@@ -433,7 +433,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         } else if (!(strcmp(token[n+3], "OR"))) { // WHILE ea <cc> ea OR
           stcLabel2 = stcLabel;
           stcLabelW++;
-          stcLabel = "_" + AnsiString::IntToHex(stcLabelW, 8);
+          stcLabel = "_" + IntToHex(stcLabelW, 8);
           //           .B/W/L        op3      <cc>      op4       DO       DO.?      label
           outCmpBcc(&token[n+4], tokenEnd, stcLabel, error);
           NEWERROR(*errorPtr, error);
@@ -463,16 +463,16 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         NEWERROR(*errorPtr, NO_WHILE);
       unsigned int whileLbl = stcStack.top();
       stcStack.pop();
-      stcLine = "\tBRA\t_" + AnsiString::IntToHex(whileLbl, 8) + "\n";
+      stcLine = "\tBRA\t_" + IntToHex(whileLbl, 8) + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "_" + AnsiString::IntToHex(endwLbl, 8) + "\n";
+      stcLine = "_" + IntToHex(endwLbl, 8) + "\n";
       assembleStc(stcLine.c_str());
       skipList = true;                        // don't display this line in ASSEMBLE.CPP
     }
 
     // -------------------- REPEAT --------------------
     if (!(strcmp(token[1], "REPEAT"))) {
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelR, 8);
+      stcLabel = "_" + IntToHex(stcLabelR, 8);
       stcLine = stcLabel + "\n";
       assembleStc(stcLine.c_str());
       stcStack.push(stcLabelR);
@@ -487,8 +487,8 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       stcStack.pop();
       if ((untilLbl & stcMask) != stcMaskR)       // if label is not from a REPEAT
         NEWERROR(*errorPtr, NO_REPEAT);
-      stcLabel2 = "_" + AnsiString::IntToHex(untilLbl, 8);
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelR, 8);
+      stcLabel2 = "_" + IntToHex(untilLbl, 8);
+      stcLabel = "_" + IntToHex(stcLabelR, 8);
 
       tokenEnd[0] = '\0';
       for (i=3; i<=LAST_TOKEN; i++) {
@@ -583,9 +583,9 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       if ((strcmp(token[n+2],token[n])))  // if op1 != op2 (FOR D1 = D1 TO ... skips move)
         assembleStc(stcLine.c_str());     // MOVE op2,op1
 
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelF, 8);
+      stcLabel = "_" + IntToHex(stcLabelF, 8);
       stcLabelF++;
-      stcLabel2 = "_" + AnsiString::IntToHex(stcLabelF, 8);
+      stcLabel2 = "_" + IntToHex(stcLabelF, 8);
       stcLine = "\tBRA" + extent + stcLabel2 + "\n";
       assembleStc(stcLine.c_str());       //   BRA _20000001
       stcStack.push(stcLabelF);           // push _20000001
@@ -629,7 +629,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         assembleStc(stcLine.c_str());       //   ADD|SUB op4,op1  or  ADD|SUB #1,op1
         forStack.pop();
 
-        stcLine = "_" + AnsiString::IntToHex(endfLbl, 8) + "\n";
+        stcLine = "_" + IntToHex(endfLbl, 8) + "\n";
         assembleStc(stcLine.c_str());       // _20000001
 
         stcLine = forStack.top();
@@ -654,7 +654,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       stcLine = "\tMOVE\t" + (String)token[4] + "," + (String)token[2] + "\n";
       if ((strcmp(token[2],token[4])))    // if op1 != op2 (DBLOOP D0 = D0 ... skips move)
         assembleStc(stcLine.c_str());     //   MOVE op2,op1
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelD, 8);
+      stcLabel = "_" + IntToHex(stcLabelD, 8);
       stcLine = stcLabel + "\n";
       assembleStc(stcLine.c_str());
       stcStack.push(stcLabelD);
@@ -669,7 +669,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       stcStack.pop();
       if ((unlessLbl & stcMask) != stcMaskD)       // if label is not from a DBLOOP
         NEWERROR(*errorPtr, NO_DBLOOP);
-      stcLabel = "\tD" + (String)dbStack.top() + ",_" + AnsiString::IntToHex(unlessLbl, 8);
+      stcLabel = "\tD" + to_string(dbStack.top()) + ",_" + IntToHex(unlessLbl, 8);
       dbStack.pop();
 
       // UNLESS <F> and UNLESS use DBRA
