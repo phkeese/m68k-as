@@ -77,7 +77,7 @@ int movem(int	size, char *label, char *op, int *errorPtr)
         //   the listing before assembling an instruction
         if (loc & 1) {
           loc++;
-          listLoc();
+        //   listLoc();
         }
 
 	/* Pick mask according to size code (only .W and .L are valid) */
@@ -370,4 +370,3 @@ char *evalList(char *p, unsigned short *listPtr, int *errorPtr)
 
 }
 
-
