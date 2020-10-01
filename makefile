@@ -5,7 +5,8 @@ INCLUDE = -Ilegacy/include
 CFLAGS = $(WARN) $(INCLUDE) $(STD)
 COMPILE = $(CC) $(CFLAGS) -c
 LINK = $(CC) $(WARN) 
-
+OBJ = main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O legacy/GLOBALS.O \
+	legacy/ERROR.O legacy/SYMBOL.O legacy/EVAL.O legacy/OPPARSE.O
 
 %.o: %.cpp
 	$(COMPILE) -o $@ $^
@@ -15,7 +16,7 @@ LINK = $(CC) $(WARN)
 	$(COMPILE) -o $@ $^
 
 
-build/m68-as: main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O legacy/GLOBALS.O legacy/ERROR.O legacy/SYMBOL.O legacy/EVAL.O
+build/m68-as: $(OBJ)
 	$(LINK) -o $@ $^
 
 
