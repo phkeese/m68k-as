@@ -30,4 +30,4 @@ extern struct Application_Struct *Application;
 
 
 // Compare two string, ignore capitalization 
-int stricmp(char *a, char *b);
+int stricmp(const char *a, const char *b);
