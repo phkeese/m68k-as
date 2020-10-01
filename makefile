@@ -14,7 +14,7 @@ LINK = $(CC) $(WARN)
 	$(COMPILE) -o $@ $^
 
 
-build/m68-as: main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O legacy/GLOBALS.O legacy/ERROR.O
+build/m68-as: main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O legacy/GLOBALS.O legacy/ERROR.O legacy/SYMBOL.O
 	$(LINK) -o $@ $^
 
 

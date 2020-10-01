@@ -8,7 +8,18 @@
 		"files.associations": {
 			"stack": "cpp",
 			"type_traits": "cpp",
-			"vector": "cpp"
+			"vector": "cpp",
+			"__locale": "cpp",
+			"__hash_table": "cpp",
+			"bitset": "cpp",
+			"functional": "cpp",
+			"unordered_map": "cpp",
+			"memory": "cpp",
+			"optional": "cpp",
+			"string": "cpp",
+			"string_view": "cpp",
+			"system_error": "cpp",
+			"utility": "cpp"
 		}
 	}
 }
