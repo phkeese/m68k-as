@@ -67,8 +67,8 @@ extern char buffer[256];  //ck used to form messages for display in windows
 
 int output(int	data, int size)
 {
-  if (listFlag)
-    listObj(data, size);
+  // if (listFlag)
+  //   listObj(data, size);
   if (objFlag)
     outputObj(loc, data, size);
   return NORMAL;
@@ -77,9 +77,6 @@ int output(int	data, int size)
 
 int effAddr(opDescriptor *operand)
 {
-  TMsgDlgButtons temp_set; //message dialog stuff
-  temp_set << mbOK;
-
   if (operand->mode == DnDirect)
     return 0x00 | operand->reg;
 
@@ -209,4 +206,3 @@ int extWords(opDescriptor *op, int size, int *errorPtr)
 
 
 
-

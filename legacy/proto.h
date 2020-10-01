@@ -20,11 +20,11 @@
 
 int	processFile(void);
 
-int	assemble(char *, int *);
+int	assemble(const char *, int *);
 
 int     createCode(char *, int *);
 
-int     assembleFile(char fileName[], char tempName[], AnsiString workName);
+int     assembleFile(const char fileName[], const char tempName[], const AnsiString workName);
 
 char    *fieldParse(char *p, opDescriptor *d, int *errorPtr);
 
@@ -138,7 +138,7 @@ int     listText(const char *text);
 
 int	listObj(int, int);
 
-int	strcap(char *, char *);
+int	strcap(char *, const char *);
 
 char	*skipSpace(char *);
 
@@ -166,7 +166,7 @@ int     optCRE();                               //ck
 
 char	*evalList(char *, unsigned short *, int *);
 
-int	initObj(char *);
+int	initObj(const char *);
 
 int	outputObj(int, int, int);
 
@@ -180,7 +180,7 @@ char	*opParse(char *, opDescriptor *, int *);
 
 symbolDef *lookup(char *, int, int *);
 
-int	hash(char *);
+int	hash_symbol(char *);
 
 symbolDef *define(char *, int, bool, bool, int *);
 
@@ -199,4 +199,3 @@ int listOn(int, char *, char *, int *);
 int listOff(int, char *, char *, int *);
 
 int memory(int, char *, char *, int *);
-

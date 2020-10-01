@@ -94,6 +94,7 @@ extern bool pass2;		// Flag set during second pass
 extern bool endFlag;		// Flag set when the END directive is encountered
 extern bool continuation;	// TRUE if the listing line is a continuation
 extern char empty[];            // used in conditional assembly
+extern char *empty_string;
 
 extern int lineNum;
 extern int lineNumL68;
@@ -154,7 +155,7 @@ extern stack<String, vector<String> > forStack;
 
 //------------------------------------------------------------
 // Assemble source file
-int assembleFile(char fileName[], char tempName[], AnsiString workName)
+int assembleFile(const char fileName[], const char tempName[], const AnsiString workName)
 {
   AnsiString outName;
   int i;
@@ -173,15 +174,16 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
       return SEVERE;
     }
 
-    // if generate listing is checked then create .L68 file
-    if (Options->chkGenList->Checked) {
-      outName = ChangeFileExt(workName, ".L68");
-      initList(outName.c_str());                // initialize list file
-    }
+    // Unused export options
+    // // if generate listing is checked then create .L68 file
+    // if (Options->chkGenList->Checked) {
+    //   outName = ChangeFileExt(workName, ".L68");
+    //   initList(outName.c_str());                // initialize list file
+    // }
 
     // if Object file flag then create .S68 file (S-Record)
     if (objFlag) {
-      outName = ChangeFileExt(workName, ".S68");
+      outName = workName + ".S68";
       if(initObj(outName.c_str()) != NORMAL)     // if error initializing object file
         objFlag = false;                        // disable object file creation
     }
@@ -192,7 +194,7 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
     // Close files and print error and warning counts
     fclose(inFile);
     fclose(tmpFile);
-    finishList();
+    // finishList();
     if (objFlag)
       finishObj();
 
@@ -206,19 +208,19 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
     while(forStack.empty() == false)
       forStack.pop();
 
-    // minimize message area if no errors or warnings
-    if (warningCount == 0 && errorCount == 0) {
-      TTextStuff *Active = (TTextStuff*)Main->ActiveMDIChild; //grab active mdi child
-        Active->Messages->Height = 7;
-    }
+    //   // minimize message area if no errors or warnings
+    // if (warningCount == 0 && errorCount == 0) {
+    //   TTextStuff *Active = (TTextStuff*)Main->ActiveMDIChild; //grab active mdi child
+    //     Active->Messages->Height = 7;
+    // }
 
-    AssemblerBox->lblStatus->Caption = IntToStr(warningCount);
-    AssemblerBox->lblStatus2->Caption = IntToStr(errorCount);
+    // AssemblerBox->lblStatus->Caption = IntToStr(warningCount);
+    // AssemblerBox->lblStatus2->Caption = IntToStr(errorCount);
 
-    if(errorCount == 0 && errorCount == 0)
-    {
-      AssemblerBox->cmdExecute->Enabled = true;
-    }
+    // if(errorCount == 0 && errorCount == 0)
+    // {
+    //   AssemblerBox->cmdExecute->Enabled = true;
+    // }
   }
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'assembleFile'. \n");
@@ -230,7 +232,7 @@ int assembleFile(char fileName[], char tempName[], AnsiString workName)
 }
 
 
-int strcap(char *d, char *s)
+int strcap(char *d, const char *s)
 {
   bool capFlag;
 
@@ -352,7 +354,7 @@ int processFile()
 }
 
 // Conditionally Assemble one line of code
-int assemble(char *line, int *errorPtr)
+int assemble(const char *line, int *errorPtr)
 {
   int value = 0;
   bool backRef = false;
@@ -363,8 +365,8 @@ int assemble(char *line, int *errorPtr)
 
   try {
 
-    if (pass2 && listFlag)
-      listLoc();
+    // if (pass2 && listFlag)
+    //   listLoc();
 
     strcap(capLine, line);
     p = skipSpace(capLine);               // skip leading white space
@@ -374,17 +376,18 @@ int assemble(char *line, int *errorPtr)
     else
       comment = false;
 
-    if (comment)                                // if comment
-      if (pass2 && listFlag) {
-        listLine(line, lineIdent);
-        return NORMAL;
+    if (comment) {                               // if comment
+      // if (pass2 && listFlag) {
+      //   listLine(line, lineIdent);
+      //   return NORMAL;
+      // }
       }
 
     // conditional assembly for all code
 
     // ----- IFC -----
     if(!(stricmp(token[1], "IFC"))) {       // if IFC opcode
-      if (token[0] != empty)                // if label present
+      if (token[0] != empty_string)                // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                        // nest level of skip
@@ -398,12 +401,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFNC -----
     } else if(!(stricmp(token[1], "IFNC"))) { // if IFNC opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[3] == empty) {                // if IFNC arguments missing
+        if (token[3] == empty_string) {                // if IFNC arguments missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           if (!(stricmp(token[2], token[3]))) { // if IFNC strings match
@@ -416,12 +419,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFEQ -----
     } else if(!(stricmp(token[1], "IFEQ"))) { // if IFEQ opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -435,12 +438,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFNE -----
     } else if(!(stricmp(token[1], "IFNE"))) {  // if IFNE opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -454,12 +457,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFLT -----
     } else if(!(stricmp(token[1], "IFLT"))) {  // if IFLT opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -473,12 +476,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFLE -----
     } else if(!(stricmp(token[1], "IFLE"))) {  // if IFLE opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -492,12 +495,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFGT -----
     } else if(!(stricmp(token[1], "IFGT"))) {  // if IFGT opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -511,12 +514,12 @@ int assemble(char *line, int *errorPtr)
 
     // ----- IFGE -----
     } else if(!(stricmp(token[1], "IFGE"))) {  // if IFGE opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (skipCond)
         nestLevel++;                          // nest level of skip
       else {
-        if (token[2] == empty) {                // if argument missing
+        if (token[2] == empty_string) {                // if argument missing
           NEWERROR(*errorPtr, INVALID_ARG);
         } else {
           eval(token[2], &value, &backRef, &error2Ptr);
@@ -530,7 +533,7 @@ int assemble(char *line, int *errorPtr)
 
     // ----- ENDC -----
     } else if(!(stricmp(token[1], "ENDC"))) {  // if ENDC opcode
-      if (token[0] != empty)                  // if label present
+      if (token[0] != empty_string)                  // if label present
         NEWERROR(*errorPtr, LABEL_ERROR);
       if (nestLevel > 0)
         nestLevel--;                          // decrease nesting level
@@ -553,10 +556,11 @@ int assemble(char *line, int *errorPtr)
       printError(listFile, *errorPtr, lineNum);
       if (printCond && !skipList)
       {
-        listCond(skipCond);
-        listLine(line, lineIdent);
-      } else if ( (listFlag && (!skipCond && !skipList)) || *errorPtr > WARNING)
-        listLine(line, lineIdent);
+        // listCond(skipCond);
+        // listLine(line, lineIdent);
+      } else if ( (listFlag && (!skipCond && !skipList)) || *errorPtr > WARNING) {
+        // listLine(line, lineIdent);
+      }
     }
 
   }
@@ -617,7 +621,7 @@ int createCode(char *capLine, int *errorPtr) {
       //   the listing before assembling an instruction
       if (loc & 1) {
         loc++;
-        listLoc();
+        // listLoc();
       }
       if (*label)
         define(label, loc, pass2, true, errorPtr);
@@ -828,7 +832,7 @@ int tokenize(char* instr, char* delim, char *token[], char* tokens){
   dotDelimiter = (strchr(delim, '.'));  // set true if . is a delimiter
   // clear token pointers
   for (i=0; i<MAXT; i++) {
-    token[i] = empty;           // this makes the pointer point to empty
+    token[i] = empty_string;           // this makes the pointer point to empty
     tokenEnd[i] = NULL;         // clear positions
   }
 
@@ -881,4 +885,3 @@ int tokenize(char* instr, char* delim, char *token[], char* tokens){
 }
 
 
-

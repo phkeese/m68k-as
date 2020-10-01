@@ -53,108 +53,108 @@ enum tokenT {UNKNOWN, CODE, OPCODE_FOUND, COMMENT, ERROR_STYLE, STRUCTURE };
 
 class TTextStuff : public TForm
 {
-__published:	// IDE-managed Components
-        TPopupMenu *PopupMenu1;
-        TMenuItem *Copy1;
-        TMenuItem *Cut1;
-        TMenuItem *Paste1;
-        TMenuItem *N1;
-        TMenuItem *SelectAll1;
-        TMenuItem *Undo1;
-        TMenuItem *N2;
-        TMenuItem *EditorReload1;
-        TSplitter *Splitter3;
-        TPopupMenu *PopupMenu2;
-        TMenuItem *ClearErrorMessages1;
-        TListView *Messages;
-        TStatusBar *StatusBar;
-        TProgressBar *ProgressBar;
-        TTimer *HighlightTimer;
-        TMenuItem *Redo1;
-        TRichEditPlus *SourceText;
-        TMenuItem *CommentSelection1;
-        TMenuItem *UncommentSelection1;
-        TMenuItem *N3;
-        void __fastcall SourceTextKeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift);
-        void __fastcall SourceTextKeyPress(TObject *Sender, char &Key);
-        void __fastcall SourceTextKeyUp(TObject *Sender, WORD &Key,
-          TShiftState Shift);
-        void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-        void __fastcall ClearErrorMessages(TObject *Sender);
-        void __fastcall MessagesDblClick(TObject *Sender);
-        void __fastcall SourceTextMouseUp(TObject *Sender,
-          TMouseButton Button, TShiftState Shift, int X, int Y);
-        void __fastcall SourceTextMouseDown(TObject *Sender,
-          TMouseButton Button, TShiftState Shift, int X, int Y);
-        void __fastcall FormShow(TObject *Sender);
-        void __fastcall tbNewClick(TObject *Sender);
-        void __fastcall tbPrintClick(TObject *Sender);
-        void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
-        void __fastcall EditorOptions1Click(TObject *Sender);
-        void __fastcall SourceTextSelectionChange(TObject *Sender);
-        void __fastcall EditorReload1Click(TObject *Sender);
-        void __fastcall SourceTextMouseMove(TObject *Sender,
-          TShiftState Shift, int X, int Y);
-        void __fastcall SourceTextProtectChange(TObject *Sender,
-          int StartPos, int EndPos, bool &AllowChange);
-        void __fastcall SourceTextChange(TObject *Sender);
-        void __fastcall FormActivate(TObject *Sender);
-        void __fastcall HighlightTimerTimer(TObject *Sender);
-        void __fastcall SourceTextVertScroll(TObject *Sender);
-        void __fastcall FormResize(TObject *Sender);
+// __published:	// IDE-managed Components
+//         TPopupMenu *PopupMenu1;
+//         TMenuItem *Copy1;
+//         TMenuItem *Cut1;
+//         TMenuItem *Paste1;
+//         TMenuItem *N1;
+//         TMenuItem *SelectAll1;
+//         TMenuItem *Undo1;
+//         TMenuItem *N2;
+//         TMenuItem *EditorReload1;
+//         TSplitter *Splitter3;
+//         TPopupMenu *PopupMenu2;
+//         TMenuItem *ClearErrorMessages1;
+//         TListView *Messages;
+//         TStatusBar *StatusBar;
+//         TProgressBar *ProgressBar;
+//         TTimer *HighlightTimer;
+//         TMenuItem *Redo1;
+//         TRichEditPlus *SourceText;
+//         TMenuItem *CommentSelection1;
+//         TMenuItem *UncommentSelection1;
+//         TMenuItem *N3;
+//         void __fastcall SourceTextKeyDown(TObject *Sender, WORD &Key,
+//           TShiftState Shift);
+//         void __fastcall SourceTextKeyPress(TObject *Sender, char &Key);
+//         void __fastcall SourceTextKeyUp(TObject *Sender, WORD &Key,
+//           TShiftState Shift);
+//         void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+//         void __fastcall ClearErrorMessages(TObject *Sender);
+//         void __fastcall MessagesDblClick(TObject *Sender);
+//         void __fastcall SourceTextMouseUp(TObject *Sender,
+//           TMouseButton Button, TShiftState Shift, int X, int Y);
+//         void __fastcall SourceTextMouseDown(TObject *Sender,
+//           TMouseButton Button, TShiftState Shift, int X, int Y);
+//         void __fastcall FormShow(TObject *Sender);
+//         void __fastcall tbNewClick(TObject *Sender);
+//         void __fastcall tbPrintClick(TObject *Sender);
+//         void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
+//         void __fastcall EditorOptions1Click(TObject *Sender);
+//         void __fastcall SourceTextSelectionChange(TObject *Sender);
+//         void __fastcall EditorReload1Click(TObject *Sender);
+//         void __fastcall SourceTextMouseMove(TObject *Sender,
+//           TShiftState Shift, int X, int Y);
+//         void __fastcall SourceTextProtectChange(TObject *Sender,
+//           int StartPos, int EndPos, bool &AllowChange);
+//         void __fastcall SourceTextChange(TObject *Sender);
+//         void __fastcall FormActivate(TObject *Sender);
+//         void __fastcall HighlightTimerTimer(TObject *Sender);
+//         void __fastcall SourceTextVertScroll(TObject *Sender);
+//         void __fastcall FormResize(TObject *Sender);
 
-private:	// User declarations
-public:		// User declarations
-        __fastcall TTextStuff(TComponent* Owner);
-
-
-        void __fastcall ProfileStart(unsigned int n);
-        void __fastcall ProfileEnd(unsigned int n);
-        void __fastcall ProfileClear();
+// private:	// User declarations
+// public:		// User declarations
+//         __fastcall TTextStuff(TComponent* Owner);
 
 
+//         void __fastcall ProfileStart(unsigned int n);
+//         void __fastcall ProfileEnd(unsigned int n);
+//         void __fastcall ProfileClear();
 
-        void __fastcall LoadFile(AnsiString name);
-        void __fastcall NewSourceFile();
-        void __fastcall UpdateStatusBar();
-        void __fastcall SetTabsAll();   // sets tabs of all SourceText
-        void __fastcall SetTabs(); //sets tabs of selected text in SourceText
-        int __fastcall GetFirstPos(int line); //returns start of line in Char positions
-        int __fastcall GetLastPos(int line); //returns end of line in Char positions
-        void __fastcall NewProject(AnsiString Type); //reset all controls to new project
-        void __fastcall insertInSelection(AnsiString istr);
-        void __fastcall deleteFromSelection(AnsiString dstr);
-        void __fastcall replaceTabs();
-        void __fastcall commentSelection();
-        void __fastcall unCommentSelection();
-        void __fastcall indentSelection();
-        void __fastcall outdentSelection();
-        void __fastcall colorHighlight(int startLine, int endLine);
-        int  __fastcall getVisibleLineCount();
-        bool __fastcall highlightLine(tokenT &tokenType);
-        char* __fastcall highlightOperand();
-        void __fastcall setFontStyle(FontStyle fs);
 
-        TPoint CurPos; //saves the cursor position
-        FileInfo Project; //project info structure
-//        int PreviousMatchCount;
-//        int PreviousLine;
-//        bool First;
-        bool InsertMode;        // tracks text insert mode
 
-        // undo items
-        // function prototypes
-        void __fastcall SaveUndo(UndoRedo item, bool notRedo);
-        void __fastcall SaveRedo(UndoRedo item);
-        void __fastcall clearRedo();
-        void __fastcall clearUndoRedo();
-        void __fastcall Undo();
-        void __fastcall Redo();
-        void __fastcall exec_undo(UndoRedo &item);
-        // undo/redo stacks
-        stack<UndoRedo,vector<UndoRedo> > undoS;
-        stack<UndoRedo,vector<UndoRedo> > redoS;
+//         void __fastcall LoadFile(AnsiString name);
+//         void __fastcall NewSourceFile();
+//         void __fastcall UpdateStatusBar();
+//         void __fastcall SetTabsAll();   // sets tabs of all SourceText
+//         void __fastcall SetTabs(); //sets tabs of selected text in SourceText
+//         int __fastcall GetFirstPos(int line); //returns start of line in Char positions
+//         int __fastcall GetLastPos(int line); //returns end of line in Char positions
+//         void __fastcall NewProject(AnsiString Type); //reset all controls to new project
+//         void __fastcall insertInSelection(AnsiString istr);
+//         void __fastcall deleteFromSelection(AnsiString dstr);
+//         void __fastcall replaceTabs();
+//         void __fastcall commentSelection();
+//         void __fastcall unCommentSelection();
+//         void __fastcall indentSelection();
+//         void __fastcall outdentSelection();
+//         void __fastcall colorHighlight(int startLine, int endLine);
+//         int  __fastcall getVisibleLineCount();
+//         bool __fastcall highlightLine(tokenT &tokenType);
+//         char* __fastcall highlightOperand();
+//         void __fastcall setFontStyle(FontStyle fs);
+
+//         TPoint CurPos; //saves the cursor position
+//         FileInfo Project; //project info structure
+// //        int PreviousMatchCount;
+// //        int PreviousLine;
+// //        bool First;
+//         bool InsertMode;        // tracks text insert mode
+
+//         // undo items
+//         // function prototypes
+//         void __fastcall SaveUndo(UndoRedo item, bool notRedo);
+//         void __fastcall SaveRedo(UndoRedo item);
+//         void __fastcall clearRedo();
+//         void __fastcall clearUndoRedo();
+//         void __fastcall Undo();
+//         void __fastcall Redo();
+//         void __fastcall exec_undo(UndoRedo &item);
+//         // undo/redo stacks
+//         stack<UndoRedo,vector<UndoRedo> > undoS;
+//         stack<UndoRedo,vector<UndoRedo> > redoS;
 
 };
 //---------------------------------------------------------------------------

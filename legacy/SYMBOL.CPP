@@ -91,7 +91,7 @@ void clearSymbols()
 symbolDef *lookup(char *sym, int create, int *errorPtr)
 {
   int h, cmp;
-  symbolDef *s, *last, *t;
+  symbolDef *s = NULL, *last = NULL, *t = NULL;
   char sym2[SIGCHARS+1];        // CK for local labels
   int i, j;
 
@@ -128,7 +128,7 @@ symbolDef *lookup(char *sym, int create, int *errorPtr)
       htable[h] = 0;
     symbolInit = true;
   }
-  h = hash(sym);
+  h = hash_symbol(sym);
   s = htable[h];
   if (s) {
     // Search the linked list for a matching symbol
@@ -212,7 +212,7 @@ int optCRE()
 //---------------------------------------------------------------------
 // Return index for array of pointers to linked lists
 // Returns 0 to MAXHASH inclusive based on first character of symbol.
-int hash(char *symbol)
+int hash_symbol(char *symbol)
 {
   if (isupper(*symbol))
     return (*symbol - 'A');
@@ -250,11 +250,13 @@ symbolDef *define(char *sym, int value, bool pass2, bool check, int *errorPtr) {
 
     if (pass2) {
       if (check) {      // if check for phase error
-        if (symbol->value != value)
-          if (symbol->flags & BACKREF)  // if symbol already defined
+        if (symbol->value != value) {
+          if (symbol->flags & BACKREF) { // if symbol already defined
             NEWERROR(*errorPtr, MULTIPLE_DEFS);
-          else
+          } else {
             NEWERROR(*errorPtr, PHASE_ERROR);
+          }
+        }
       }
       symbol->flags |= BACKREF;       // mark symbol as defined
       if (symbol->flags & REDEFINABLE)  // ck 1-10-2008
@@ -267,4 +269,3 @@ symbolDef *define(char *sym, int value, bool pass2, bool check, int *errorPtr) {
   return symbol;
 }
 
-

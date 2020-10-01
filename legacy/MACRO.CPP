@@ -41,6 +41,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "asm.h"
+#include <sub_stdlib.h>
 
 extern char line[256];		// Source line
 extern FILE *inFile;            // source file
@@ -97,8 +98,8 @@ int macro(int size, char *label, char *op, int *errorPtr)
   }
   symbol->flags |= MACRO_SYM;         // set MACRO_SYM flag
 
-  if (pass2 && listFlag)
-    listLine(line);
+  // if (pass2 && listFlag)
+  //   listLine(line);
 
   // move file pointer past ENDM directive
   while(fgets(line, 256, inFile)) {
@@ -113,8 +114,8 @@ int macro(int size, char *label, char *op, int *errorPtr)
     }
     if(!(stricmp(token[1], "ENDM")))     // if ENDM opcode
       return NORMAL;
-    if (pass2 && listFlag)
-      listLine(line);
+    // if (pass2 && listFlag)
+    //   listLine(line);
   }
   NEWERROR(*errorPtr, NO_ENDM);         // no ENDM found
   noENDM = true;
@@ -220,8 +221,8 @@ int asmMacro(int size, char *label, char *arg, int *errorPtr)
         if (pass2) {
           if (listFlag) {
             printError(listFile, *errorPtr, lineNum);
-            if (!skipList)
-              listLine(line, lineIdent);
+            // if (!skipList)
+            //   listLine(line, lineIdent);
           } else {
             printError(NULL, *errorPtr, lineNum);
           }
@@ -237,8 +238,8 @@ int asmMacro(int size, char *label, char *arg, int *errorPtr)
         error = OK;
         continuation = false;
 
-        if (pass2 && listFlag)
-          listLoc();
+        // if (pass2 && listFlag)
+        //   listLoc();
         if (*capL != '&') {             // continuation line must start with '&'
           NEWERROR(*errorPtr, INVALID_ARG);
           macroNestLevel--;               // count nested macro calls
@@ -263,10 +264,10 @@ int asmMacro(int size, char *label, char *arg, int *errorPtr)
     else break;
   }
 
-  if (pass2 && listFlag && !skipList) {   // if macro call should be listed
-    listLoc();
-    listLine(line, lineIdent);
-  }
+  // if (pass2 && listFlag && !skipList) {   // if macro call should be listed
+  //   listLoc();
+  //   listLine(line, lineIdent);
+  // }
 
   // position tempFile to macro definition
   fseek(tmpFile, macroFP, SEEK_SET);   // move to macro definition

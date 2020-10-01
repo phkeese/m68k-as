@@ -116,9 +116,9 @@ int org(int size, char *label, char *op, int *errorPtr)
       loc = newLoc;
       // Define the label attached to this directive, if any
       if (*label)
-	define(label, loc, pass2, true, errorPtr);
+	      define(label, loc, pass2, true, errorPtr);
       // Show new location counter on listing
-      listLoc();
+      // listLoc();
     }
     else
       NEWERROR(*errorPtr, SYNTAX);
@@ -156,7 +156,7 @@ int section(int size, char *label, char *op, int *errorPtr)
       loc = sectionLoc[value];            // set loc to new section
       sectI = value;                      // new section number
       // Show new location counter on listing
-      listLoc();
+      // listLoc();
     } else {
       NEWERROR(*errorPtr, SYNTAX);
     }
@@ -196,7 +196,7 @@ int offset(int size, char *label, char *op, int *errorPtr)
       }
       loc = newLoc;
       // Show new location counter on listing
-      listLoc();
+      // listLoc();
     }
     else
       NEWERROR(*errorPtr, SYNTAX);
@@ -354,7 +354,7 @@ int dc(int size, char *label, char *op, int *errorPtr)
     loc++;
   }
   showEqual = true;
-  listLoc();
+  // listLoc();
   showEqual = false;
   // Define the label attached to this directive, if any
   if (*label)
@@ -463,7 +463,7 @@ int dcb(int size, char *label, char *op, int *errorPtr)
     loc++;
   }
   showEqual = true;
-  listLoc();
+  // listLoc();
   showEqual = false;
 
   // Define the label attached to this directive, if any
@@ -530,7 +530,7 @@ int ds(int size, char *label, char *op, int *errorPtr)
   // DS.W or DS.L (but not if doing DS.B, so DS.B's can be contiguous)
   if ((size & (WORD_SIZE | LONG_SIZE)) && (loc & 1)) {
     loc++;
-    listLoc();
+    // listLoc();
   }
 
   // Define the label attached to this directive, if any
@@ -619,9 +619,9 @@ int opt(int size, char *label, char *op, int *errorPtr)
       CEXflag = false;            // disable constant expansion
     else if ( strcmpi(option,"BIT") == 0) {
       BITflag = true;             // enable bit field support
-      if (pass2 && listFlag) {
-        listLine("*[sim68k]bitfield\n");        // enables bit field support in Sim68K
-      }
+      // if (pass2 && listFlag) {
+      //   listLine("*[sim68k]bitfield\n");        // enables bit field support in Sim68K
+      // }
     }
     else
       NEWERROR(*errorPtr, SYNTAX);
@@ -690,9 +690,9 @@ int include(int size, char *label, char *fileName, int *errorPtr)
   dst++;
   *dst = '\0';
 
-  if (pass2 && listFlag) {   // if include directive should be listed
-    listLine(line);
-  }
+  // if (pass2 && listFlag) {   // if include directive should be listed
+  //   listLine(line);
+  // }
 
   try {
     incFile = fopen(capLine, "r");     // attempt to open include file
@@ -708,15 +708,15 @@ int include(int size, char *label, char *fileName, int *errorPtr)
 
     // check to see if the included file is already open
     AnsiString includeFileStr(includeFile);
-    for(int i = Main->MDIChildCount-1; i >= 0; i--) {
-      TextStuff = (TTextStuff*)Main->MDIChildren[i];
-      //if(TextStuff->Project.CurrentFile == includeFileStr) { // if file already open
-      if(ExpandFileName(TextStuff->Project.CurrentFile).AnsiCompareIC(ExpandFileName(includeFileStr)) == 0) {
-        TextStuff->Messages->Height = 7;
-        TextStuff->Messages->Items->Clear();
-        TextStuff->Messages->Enabled = false;
-      }
-    }
+    // for(int i = Main->MDIChildCount-1; i >= 0; i--) {
+    //   TextStuff = (TTextStuff*)Main->MDIChildren[i];
+    //   //if(TextStuff->Project.CurrentFile == includeFileStr) { // if file already open
+    //   if(ExpandFileName(TextStuff->Project.CurrentFile).AnsiCompareIC(ExpandFileName(includeFileStr)) == 0) {
+    //     TextStuff->Messages->Height = 7;
+    //     TextStuff->Messages->Items->Clear();
+    //     TextStuff->Messages->Enabled = false;
+    //   }
+    // }
 
     // assemble each line of the include file
     // until END directive or EOF
@@ -739,10 +739,10 @@ int include(int size, char *label, char *fileName, int *errorPtr)
 
     includeNestLevel--;
 
-    if (pass2 && listFlag) {
-      skipList = true;      // don't list INCLUDE statement again
-      listLine("-------------------- end include --------------------\n");
-    }
+    // if (pass2 && listFlag) {
+    //   skipList = true;      // don't list INCLUDE statement again
+    //   listLine("-------------------- end include --------------------\n");
+    // }
 
   }
   catch( ... ) {
@@ -805,9 +805,9 @@ int incbin(int size, char *label, char *fileName, int *errorPtr)
   dst++;
   *dst = '\0';
 
-  if (pass2 && listFlag) {   // if incbin directive should be listed
-    listLine(line);
-  }
+  // if (pass2 && listFlag) {   // if incbin directive should be listed
+  //   listLine(line);
+  // }
 
   try {
     incFile = fopen(capLine, "rb");    // attempt to open incbin binary file
@@ -1002,7 +1002,7 @@ int simhalt(int size, char *label, char *op, int *errorPtr)
   if (loc & 1)
     loc++;
 
-  listLoc();
+  // listLoc();
 
   // Define the label attached to this directive, if any
   if (*label)
@@ -1033,11 +1033,10 @@ int page(int size, char *label, char *op, int *errorPtr)
 
   skipList = true;                      // don't display PAGE directive
 
-  if (pass2 && listFlag) {
-    listText(NEW_PAGE_MARKER);
-    listText("\n");
-  }
+  // if (pass2 && listFlag) {
+  //   listText(NEW_PAGE_MARKER);
+  //   listText("\n");
+  // }
 
   return NORMAL;
 }
-

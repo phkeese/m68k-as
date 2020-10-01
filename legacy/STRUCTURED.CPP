@@ -9,8 +9,8 @@
 
  ************************************************************************/
 
-#include <stack.h>
-#include <vector.h>
+#include <stack>
+#include <vector>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -34,10 +34,10 @@ extern int  macroNestLevel;     // used by macro processing
 extern char lineIdent[];        // "s" used to identify structure in listing
 
 // prototypes
-AnsiString getBcc(AnsiString cc, int mode, int or);
+AnsiString getBcc(AnsiString cc, int mode, int or_mask);
 void outCmpBcc(char *size, char *op1, char *cc, char *op2, char *op3,
                     AnsiString label, int &error);
-void assembleStc(char* line);
+void assembleStc(const char* line);
 
 const unsigned int stcMask  = 0xF0000000;
 const unsigned int stcMaskI = 0x00000000;
@@ -64,11 +64,11 @@ const int LAST_TOKEN = 11;      // highest token possible of structure
 AnsiString stcLabel;
 
 // Make a stack using a vector container
-stack<int,vector<int> > stcStack;
+std::stack<int, std::vector<int> > stcStack;
 // Make a stack for saving dbloop register number
-stack<char, vector<char> > dbStack;
+std::stack<char, std::vector<char> > dbStack;
 // Make a stack for saving FOR arguments
-stack<String, vector<String> > forStack;
+std::stack<String, std::vector<String> > forStack;
 
 // This table contains the branch condition codes to use for the different
 // conditional expressions.
@@ -101,11 +101,11 @@ const char* BccCodes[BCC_COUNT][5] = {
 //-------------------------------------------------------
 // returns a branch instruction
 // or is 1 on ea <cc> ea OR, 0 otherwise
-AnsiString getBcc(AnsiString cc, int mode, int or) {
-  cc = cc.UpperCase();
+AnsiString getBcc(AnsiString cc, int mode, int or_mask) {
+  cc = UpperCase(cc);
   for (int i=0; i<BCC_COUNT; i++) {
     if (cc == BccCodes[i][0])
-      return BccCodes[i][mode + or];
+      return BccCodes[i][mode + or_mask];
   }
   return "B??";
 }
@@ -132,7 +132,7 @@ AnsiString getBcc(AnsiString cc, int mode, int or) {
 void outCmpBcc( char *token[], char *last, AnsiString label, int &error) {
 
   AnsiString stcLine, stcCmp, extent;
-  int or=0, n=0;
+  int or_mask=0, n=0;
 
   try {
     error = OK;
@@ -165,42 +165,42 @@ void outCmpBcc( char *token[], char *last, AnsiString label, int &error) {
       extent = "\t";
 
     if ( !(strcmp(token[n+1], "OR")) || !(strcmp(token[n+3], "OR"))) {
-      or = 1;
+      or_mask = 1;
       extent = ".S\t";            // first branch with OR logic is always short
     }
 
     if (token[n][0] == '<') {     // IF <cc> THEN
-      stcLine = "\t" + getBcc(token[n],IF_CC,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n],IF_CC,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     }else if (token[n][0] == '#') {                    // #nn <cc> ea
       stcLine = stcCmp + (String)token[n] + "," + token[n+2] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],IM_EA,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],IM_EA,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     }else if (token[n+2][0] == '#') {                    // ea <cc> #nn
       stcLine = stcCmp + (String)token[n+2] + "," + (String)token[n] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],EA_IM,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],EA_IM,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     // Rn <cc> ea
     }else if ((token[n][0]=='A' || token[n][0]=='D') &&
                isRegNum(token[n][1])) {
       stcLine = stcCmp + (String)token[n+2] + "," + (String)token[n] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],RN_EA,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],RN_EA,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     // ea <cc> Rn
     }else if ((token[n+2][0]=='A' || token[n+2][0]=='D') &&
                isRegNum(token[n+2][1])) {
       stcLine = stcCmp + (String)token[n] + "," + (String)token[n+2] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],EA_RN,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],EA_RN,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     // (An)+ <cc> (An)+  also supports (SP)+ (MUST BE LAST IN IF-ELSE CHAIN)
     }else if ((token[n][0]=='(' && token[n][3]==')' && token[n][4]=='+')) {
       stcLine = stcCmp + (String)token[n] + "," + (String)token[n+2] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],RN_EA,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],RN_EA,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     }else{
       error = SYNTAX;
@@ -292,11 +292,11 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
     if (pass2 && listFlag) {
       if (!(macroNestLevel > 0 && skipList == true)) // if not called from macro with listing off
       {
-        listLoc();
-        if (macroNestLevel > 0)             // if called from macro
-          listLine(line, lineIdent);        // tag line as macro
-        else
-          listLine(line);
+        // listLoc();
+        // if (macroNestLevel > 0)             // if called from macro
+        //   listLine(line, lineIdent);        // tag line as macro
+        // else
+        //   listLine(line);
       }
     }
 
@@ -307,8 +307,9 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
 
     // -------------------- IF --------------------
     // IF[.B|.W|.L] op1 <cc> op2 [OR/AND[.B|.W|.L]  op3 <cc> op4] THEN
-    if (!(strcmpi(token[1], "IF"))) {             // IF ?
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelI, 8);
+    // Ok, seriously, why does strcmpi exist, when stricmp exists?
+    if (!(stricmp(token[1], "IF"))) {             // IF ?
+      stcLabel = "_" + IntToHex(stcLabelI, 8);
       tokenEnd[0] = '\0';
       for (i=3; i<=LAST_TOKEN; i++) {
         if (!(strcmp(token[i], "THEN"))) {    // find THEN
@@ -326,7 +327,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       if (!(strcmp(token[n+1], "OR"))) {    // IF <cc> OR
         stcLabel2 = stcLabel;
         stcLabelI++;
-        stcLabel = "_" + AnsiString::IntToHex(stcLabelI, 8);
+        stcLabel = "_" + IntToHex(stcLabelI, 8);
         //           .B/W/L       op3      <cc>      op4       THEN      THEN.?    label
         outCmpBcc(&token[n+2], tokenEnd, stcLabel, error);
         NEWERROR(*errorPtr, error);
@@ -335,7 +336,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       } else if (!(strcmp(token[n+3], "OR"))) { // IF ea <cc> ea OR
         stcLabel2 = stcLabel;
         stcLabelI++;
-        stcLabel = "_" + AnsiString::IntToHex(stcLabelI, 8);
+        stcLabel = "_" + IntToHex(stcLabelI, 8);
         //           .B/W/L       op3      <cc>      op4       THEN      THEN.?    label
         outCmpBcc(&token[n+4], tokenEnd, stcLabel, error);
         NEWERROR(*errorPtr, error);
@@ -375,12 +376,12 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         extent = "\t";
       }
 
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelI, 8);
+      stcLabel = "_" + IntToHex(stcLabelI, 8);
       stcLine = "\tBRA" + extent + stcLabel + "\n";
       assembleStc(stcLine.c_str());
       stcStack.push(stcLabelI);
       stcLabelI++;
-      stcLine = "_" + AnsiString::IntToHex(elseLbl, 8) + "\n";
+      stcLine = "_" + IntToHex(elseLbl, 8) + "\n";
       assembleStc(stcLine.c_str());
       skipList = true;                        // don't display this line in ASSEMBLE.CPP
     }
@@ -391,7 +392,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       stcStack.pop();
       if ((endiLbl & stcMask) != stcMaskI)        // if label is not from an IF
         NEWERROR(*errorPtr, NO_IF);
-      stcLine = "_" + AnsiString::IntToHex(endiLbl, 8) + "\n";
+      stcLine = "_" + IntToHex(endiLbl, 8) + "\n";
       assembleStc(stcLine.c_str());
       skipList = true;                        // don't display this line in ASSEMBLE.CPP
     }
@@ -400,13 +401,13 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
     // WHILE[.B|.W|.L] op1 <cc> op2 [OR/AND[.B|.W|.L]  op3 <cc> op4] DO
     // WHILE <T> D0 create infinite loop
     if (!(strcmp(token[1], "WHILE"))) {          // WHILE
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelW, 8);
+      stcLabel = "_" + IntToHex(stcLabelW, 8);
       stcLine = stcLabel + "\n";
       assembleStc(stcLine.c_str());
       stcStack.push(stcLabelW);
       stcLabelW++;
 
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelW, 8);
+      stcLabel = "_" + IntToHex(stcLabelW, 8);
       tokenEnd[0] = '\0';
       for (i=3; i<=LAST_TOKEN; i++) {
         if (!(strcmp(token[i], "DO"))) {     // if DO
@@ -423,7 +424,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         if (!(strcmp(token[n+1], "OR"))) { // WHILE <cc> OR
           stcLabel2 = stcLabel;
           stcLabelW++;
-          stcLabel = "_" + AnsiString::IntToHex(stcLabelW, 8);
+          stcLabel = "_" + IntToHex(stcLabelW, 8);
           //           .B/W/L        op3      <cc>      op4       DO       DO.?      label
           outCmpBcc(&token[n+2], tokenEnd, stcLabel, error);
           NEWERROR(*errorPtr, error);
@@ -432,7 +433,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         } else if (!(strcmp(token[n+3], "OR"))) { // WHILE ea <cc> ea OR
           stcLabel2 = stcLabel;
           stcLabelW++;
-          stcLabel = "_" + AnsiString::IntToHex(stcLabelW, 8);
+          stcLabel = "_" + IntToHex(stcLabelW, 8);
           //           .B/W/L        op3      <cc>      op4       DO       DO.?      label
           outCmpBcc(&token[n+4], tokenEnd, stcLabel, error);
           NEWERROR(*errorPtr, error);
@@ -462,16 +463,16 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         NEWERROR(*errorPtr, NO_WHILE);
       unsigned int whileLbl = stcStack.top();
       stcStack.pop();
-      stcLine = "\tBRA\t_" + AnsiString::IntToHex(whileLbl, 8) + "\n";
+      stcLine = "\tBRA\t_" + IntToHex(whileLbl, 8) + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "_" + AnsiString::IntToHex(endwLbl, 8) + "\n";
+      stcLine = "_" + IntToHex(endwLbl, 8) + "\n";
       assembleStc(stcLine.c_str());
       skipList = true;                        // don't display this line in ASSEMBLE.CPP
     }
 
     // -------------------- REPEAT --------------------
     if (!(strcmp(token[1], "REPEAT"))) {
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelR, 8);
+      stcLabel = "_" + IntToHex(stcLabelR, 8);
       stcLine = stcLabel + "\n";
       assembleStc(stcLine.c_str());
       stcStack.push(stcLabelR);
@@ -486,8 +487,8 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       stcStack.pop();
       if ((untilLbl & stcMask) != stcMaskR)       // if label is not from a REPEAT
         NEWERROR(*errorPtr, NO_REPEAT);
-      stcLabel2 = "_" + AnsiString::IntToHex(untilLbl, 8);
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelR, 8);
+      stcLabel2 = "_" + IntToHex(untilLbl, 8);
+      stcLabel = "_" + IntToHex(stcLabelR, 8);
 
       tokenEnd[0] = '\0';
       for (i=3; i<=LAST_TOKEN; i++) {
@@ -582,9 +583,9 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       if ((strcmp(token[n+2],token[n])))  // if op1 != op2 (FOR D1 = D1 TO ... skips move)
         assembleStc(stcLine.c_str());     // MOVE op2,op1
 
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelF, 8);
+      stcLabel = "_" + IntToHex(stcLabelF, 8);
       stcLabelF++;
-      stcLabel2 = "_" + AnsiString::IntToHex(stcLabelF, 8);
+      stcLabel2 = "_" + IntToHex(stcLabelF, 8);
       stcLine = "\tBRA" + extent + stcLabel2 + "\n";
       assembleStc(stcLine.c_str());       //   BRA _20000001
       stcStack.push(stcLabelF);           // push _20000001
@@ -628,7 +629,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
         assembleStc(stcLine.c_str());       //   ADD|SUB op4,op1  or  ADD|SUB #1,op1
         forStack.pop();
 
-        stcLine = "_" + AnsiString::IntToHex(endfLbl, 8) + "\n";
+        stcLine = "_" + IntToHex(endfLbl, 8) + "\n";
         assembleStc(stcLine.c_str());       // _20000001
 
         stcLine = forStack.top();
@@ -653,7 +654,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       stcLine = "\tMOVE\t" + (String)token[4] + "," + (String)token[2] + "\n";
       if ((strcmp(token[2],token[4])))    // if op1 != op2 (DBLOOP D0 = D0 ... skips move)
         assembleStc(stcLine.c_str());     //   MOVE op2,op1
-      stcLabel = "_" + AnsiString::IntToHex(stcLabelD, 8);
+      stcLabel = "_" + IntToHex(stcLabelD, 8);
       stcLine = stcLabel + "\n";
       assembleStc(stcLine.c_str());
       stcStack.push(stcLabelD);
@@ -668,7 +669,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
       stcStack.pop();
       if ((unlessLbl & stcMask) != stcMaskD)       // if label is not from a DBLOOP
         NEWERROR(*errorPtr, NO_DBLOOP);
-      stcLabel = "\tD" + (String)dbStack.top() + ",_" + AnsiString::IntToHex(unlessLbl, 8);
+      stcLabel = "\tD" + to_string(dbStack.top()) + ",_" + IntToHex(unlessLbl, 8);
       dbStack.pop();
 
       // UNLESS <F> and UNLESS use DBRA
@@ -726,7 +727,7 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
   return NORMAL;
 }
 
-void assembleStc(char* line)
+void assembleStc(const char* line)
 {
   int error = OK;
   int i=0;
