@@ -20,7 +20,7 @@
 
 int	processFile(void);
 
-int	assemble(char *, int *);
+int	assemble(const char *, int *);
 
 int     createCode(char *, int *);
 
@@ -138,7 +138,7 @@ int     listText(const char *text);
 
 int	listObj(int, int);
 
-int	strcap(char *, char *);
+int	strcap(char *, const char *);
 
 char	*skipSpace(char *);
 

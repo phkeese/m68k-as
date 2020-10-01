@@ -37,7 +37,7 @@ extern char lineIdent[];        // "s" used to identify structure in listing
 AnsiString getBcc(AnsiString cc, int mode, int or_mask);
 void outCmpBcc(char *size, char *op1, char *cc, char *op2, char *op3,
                     AnsiString label, int &error);
-void assembleStc(char* line);
+void assembleStc(const char* line);
 
 const unsigned int stcMask  = 0xF0000000;
 const unsigned int stcMaskI = 0x00000000;
@@ -292,11 +292,11 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
     if (pass2 && listFlag) {
       if (!(macroNestLevel > 0 && skipList == true)) // if not called from macro with listing off
       {
-        listLoc();
-        if (macroNestLevel > 0)             // if called from macro
-          listLine(line, lineIdent);        // tag line as macro
-        else
-          listLine(line);
+        // listLoc();
+        // if (macroNestLevel > 0)             // if called from macro
+        //   listLine(line, lineIdent);        // tag line as macro
+        // else
+        //   listLine(line);
       }
     }
 
