@@ -7,7 +7,7 @@ COMPILE = $(CC) $(CFLAGS) -c
 LINK = $(CC) $(WARN) 
 OBJ = main.o legacy/ASSEMBLE.O legacy/vcl.o legacy/INSTLOOK.O     \
 	legacy/GLOBALS.O legacy/ERROR.O legacy/SYMBOL.O legacy/EVAL.O \
-	legacy/OPPARSE.O legacy/MACRO.O legacy/sub_stdlib.o
+	legacy/OPPARSE.O legacy/MACRO.O legacy/sub_stdlib.o legacy/BUILD.O 
 
 
 %.o: %.cpp
