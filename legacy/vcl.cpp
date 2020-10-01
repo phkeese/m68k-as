@@ -48,7 +48,12 @@ int strnicmp(const char *a, const char *b, int n) {
 
 // Convert AnsiString to Integer
 int StrToInt(const AnsiString S) {
-	return atoi(S.c_str());
+	std::stringstream ss;
+	ss << std::hex;
+	ss << S;
+	int result;
+	ss >> result;
+	return result;
 }
 
 
