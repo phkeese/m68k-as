@@ -40,7 +40,7 @@ m68k-as <source> <temp file> <workname>
 
 This will generate two files, `<work name>.S68` with the assembled code and `<temp file>` in the current directory. 
 
-The temporary can be deleted.
+The temporary file can be deleted.
 
 ---
 
