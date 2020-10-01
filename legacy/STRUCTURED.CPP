@@ -34,7 +34,7 @@ extern int  macroNestLevel;     // used by macro processing
 extern char lineIdent[];        // "s" used to identify structure in listing
 
 // prototypes
-AnsiString getBcc(AnsiString cc, int mode, int or);
+AnsiString getBcc(AnsiString cc, int mode, int or_mask);
 void outCmpBcc(char *size, char *op1, char *cc, char *op2, char *op3,
                     AnsiString label, int &error);
 void assembleStc(char* line);
@@ -101,11 +101,11 @@ const char* BccCodes[BCC_COUNT][5] = {
 //-------------------------------------------------------
 // returns a branch instruction
 // or is 1 on ea <cc> ea OR, 0 otherwise
-AnsiString getBcc(AnsiString cc, int mode, int or) {
+AnsiString getBcc(AnsiString cc, int mode, int or_mask) {
   cc = cc.UpperCase();
   for (int i=0; i<BCC_COUNT; i++) {
     if (cc == BccCodes[i][0])
-      return BccCodes[i][mode + or];
+      return BccCodes[i][mode + or_mask];
   }
   return "B??";
 }
@@ -132,7 +132,7 @@ AnsiString getBcc(AnsiString cc, int mode, int or) {
 void outCmpBcc( char *token[], char *last, AnsiString label, int &error) {
 
   AnsiString stcLine, stcCmp, extent;
-  int or=0, n=0;
+  int or_mask=0, n=0;
 
   try {
     error = OK;
@@ -165,42 +165,42 @@ void outCmpBcc( char *token[], char *last, AnsiString label, int &error) {
       extent = "\t";
 
     if ( !(strcmp(token[n+1], "OR")) || !(strcmp(token[n+3], "OR"))) {
-      or = 1;
+      or_mask = 1;
       extent = ".S\t";            // first branch with OR logic is always short
     }
 
     if (token[n][0] == '<') {     // IF <cc> THEN
-      stcLine = "\t" + getBcc(token[n],IF_CC,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n],IF_CC,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     }else if (token[n][0] == '#') {                    // #nn <cc> ea
       stcLine = stcCmp + (String)token[n] + "," + token[n+2] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],IM_EA,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],IM_EA,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     }else if (token[n+2][0] == '#') {                    // ea <cc> #nn
       stcLine = stcCmp + (String)token[n+2] + "," + (String)token[n] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],EA_IM,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],EA_IM,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     // Rn <cc> ea
     }else if ((token[n][0]=='A' || token[n][0]=='D') &&
                isRegNum(token[n][1])) {
       stcLine = stcCmp + (String)token[n+2] + "," + (String)token[n] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],RN_EA,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],RN_EA,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     // ea <cc> Rn
     }else if ((token[n+2][0]=='A' || token[n+2][0]=='D') &&
                isRegNum(token[n+2][1])) {
       stcLine = stcCmp + (String)token[n] + "," + (String)token[n+2] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],EA_RN,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],EA_RN,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     // (An)+ <cc> (An)+  also supports (SP)+ (MUST BE LAST IN IF-ELSE CHAIN)
     }else if ((token[n][0]=='(' && token[n][3]==')' && token[n][4]=='+')) {
       stcLine = stcCmp + (String)token[n] + "," + (String)token[n+2] + "\n";
       assembleStc(stcLine.c_str());
-      stcLine = "\t" + getBcc(token[n+1],RN_EA,or) + extent + label + "\n";
+      stcLine = "\t" + getBcc(token[n+1],RN_EA,or_mask) + extent + label + "\n";
       assembleStc(stcLine.c_str());
     }else{
       error = SYNTAX;
@@ -307,7 +307,8 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
 
     // -------------------- IF --------------------
     // IF[.B|.W|.L] op1 <cc> op2 [OR/AND[.B|.W|.L]  op3 <cc> op4] THEN
-    if (!(strcmpi(token[1], "IF"))) {             // IF ?
+    // Ok, seriously, why does strcmpi exist, when stricmp exists?
+    if (!(stricmp(token[1], "IF"))) {             // IF ?
       stcLabel = "_" + AnsiString::IntToHex(stcLabelI, 8);
       tokenEnd[0] = '\0';
       for (i=3; i<=LAST_TOKEN; i++) {
