@@ -91,7 +91,7 @@ void clearSymbols()
 symbolDef *lookup(char *sym, int create, int *errorPtr)
 {
   int h, cmp;
-  symbolDef *s, *last, *t;
+  symbolDef *s = NULL, *last = NULL, *t = NULL;
   char sym2[SIGCHARS+1];        // CK for local labels
   int i, j;
 
@@ -250,11 +250,13 @@ symbolDef *define(char *sym, int value, bool pass2, bool check, int *errorPtr) {
 
     if (pass2) {
       if (check) {      // if check for phase error
-        if (symbol->value != value)
-          if (symbol->flags & BACKREF)  // if symbol already defined
+        if (symbol->value != value) {
+          if (symbol->flags & BACKREF) { // if symbol already defined
             NEWERROR(*errorPtr, MULTIPLE_DEFS);
-          else
+          } else {
             NEWERROR(*errorPtr, PHASE_ERROR);
+          }
+        }
       }
       symbol->flags |= BACKREF;       // mark symbol as defined
       if (symbol->flags & REDEFINABLE)  // ck 1-10-2008
