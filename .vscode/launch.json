@@ -10,9 +10,7 @@
 			"request": "launch",
 			"program": "${workspaceFolder}/build/m68k-as",
 			"args": [
-				"result/tutorial4.X68",
-				"temp.out",
-				"tutorial4"
+				"result/tutorial4.X68", "temp.out", "tutorial4"
 			],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
