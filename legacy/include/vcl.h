@@ -6,6 +6,7 @@
 #pragma once
 
 #include <string>
+#include <ctime>
 
 
 #define MB_OK 0
@@ -49,3 +50,12 @@ AnsiString IntToHex(int value, int digits);
 
 // Convert char to String
 String to_string(char c);
+
+
+
+// Get current date and time
+time_t Now();
+
+
+// Return current time in dd/mm/yyyy hh:mm:ss
+AnsiString DateTimeToStr(const time_t time);

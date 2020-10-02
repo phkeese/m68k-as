@@ -78,3 +78,19 @@ AnsiString IntToHex(int s, int digits) {
 String to_string(char c) {
 	return String(1,c);
 }
+
+
+// Get current date and time
+time_t Now() {
+	return time(nullptr);
+}
+
+
+// Return current time in dd/mm/yyyy hh:mm:ss
+AnsiString DateTimeToStr(const time_t t) {
+	tm *ltm = localtime(&t);
+	std::stringstream ss;
+	ss << std::setw(2);
+	ss << ltm->tm_mday << "/" << ltm->tm_mon + 1 << "/" << ltm->tm_year + 1900;
+	ss << " " << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec;
+}
