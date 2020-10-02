@@ -3,26 +3,20 @@
 	NOT meant to implement the entirety of VCL from Borland
 */
 
-#include <vcl.h>
-#include <iostream>
 #include <cstring>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
-
+#include <vcl.h>
 
 void report_error(String message, String title, int status) {
 	std::cout << title << ":" << status << ":" << message << std::endl;
 }
 
-
 // Provide basic functionality of Application from Borland
-Application_Struct app = {
-	.MessageBox = &report_error
-};
-
+Application_Struct app = {.MessageBox = &report_error};
 
 Application_Struct *Application;
-
 
 // Compare strings, ignore capitalization
 int stricmp(const char *a, const char *b) {
@@ -30,9 +24,8 @@ int stricmp(const char *a, const char *b) {
 		a++;
 		b++;
 	}
-	return *(const unsigned char*)a - *(const unsigned char*)b;
+	return *(const unsigned char *)a - *(const unsigned char *)b;
 }
-
 
 // Compare two string up to n characters, ignore capitalization
 int strnicmp(const char *a, const char *b, int n) {
@@ -44,8 +37,6 @@ int strnicmp(const char *a, const char *b, int n) {
 	return 0;
 }
 
-
-
 // Convert AnsiString to Integer
 int StrToInt(const AnsiString S) {
 	std::stringstream ss;
@@ -55,7 +46,6 @@ int StrToInt(const AnsiString S) {
 	ss >> result;
 	return result;
 }
-
 
 // AnsiString conversions
 AnsiString UpperCase(AnsiString s) {
@@ -73,18 +63,11 @@ AnsiString IntToHex(int s, int digits) {
 	return ss.str();
 }
 
-
 // Convert char to String
-String to_string(char c) {
-	return String(1,c);
-}
-
+String to_string(char c) { return String(1, c); }
 
 // Get current date and time
-time_t Now() {
-	return time(nullptr);
-}
-
+time_t Now() { return time(nullptr); }
 
 // Return current time in dd/mm/yyyy hh:mm:ss
 AnsiString DateTimeToStr(const time_t t) {
