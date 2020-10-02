@@ -619,9 +619,9 @@ int opt(int size, char *label, char *op, int *errorPtr)
       CEXflag = false;            // disable constant expansion
     else if ( strcmpi(option,"BIT") == 0) {
       BITflag = true;             // enable bit field support
-      // if (pass2 && listFlag) {
-      //   listLine("*[sim68k]bitfield\n");        // enables bit field support in Sim68K
-      // }
+      if (pass2 && listFlag) {
+        listLine("*[sim68k]bitfield\n");        // enables bit field support in Sim68K
+      }
     }
     else
       NEWERROR(*errorPtr, SYNTAX);
@@ -690,9 +690,9 @@ int include(int size, char *label, char *fileName, int *errorPtr)
   dst++;
   *dst = '\0';
 
-  // if (pass2 && listFlag) {   // if include directive should be listed
-  //   listLine(line);
-  // }
+  if (pass2 && listFlag) {   // if include directive should be listed
+    listLine(line);
+  }
 
   try {
     incFile = fopen(capLine, "r");     // attempt to open include file
@@ -739,10 +739,10 @@ int include(int size, char *label, char *fileName, int *errorPtr)
 
     includeNestLevel--;
 
-    // if (pass2 && listFlag) {
-    //   skipList = true;      // don't list INCLUDE statement again
-    //   listLine("-------------------- end include --------------------\n");
-    // }
+    if (pass2 && listFlag) {
+      skipList = true;      // don't list INCLUDE statement again
+      listLine("-------------------- end include --------------------\n");
+    }
 
   }
   catch( ... ) {
@@ -805,9 +805,9 @@ int incbin(int size, char *label, char *fileName, int *errorPtr)
   dst++;
   *dst = '\0';
 
-  // if (pass2 && listFlag) {   // if incbin directive should be listed
-  //   listLine(line);
-  // }
+  if (pass2 && listFlag) {   // if incbin directive should be listed
+    listLine(line);
+  }
 
   try {
     incFile = fopen(capLine, "rb");    // attempt to open incbin binary file
@@ -1009,8 +1009,8 @@ int simhalt(int size, char *label, char *op, int *errorPtr)
     define(label, loc, pass2, true, errorPtr);
 
   if (pass2) {
-    //if (listFlag)       // if directive should be listed
-    //  listLine(line);
+    if (listFlag)       // if directive should be listed
+     listLine(line);
     output(0xFFFF, WORD_SIZE);  // opcode $FFFF $FFFF
     output(0xFFFF, WORD_SIZE);  // opcode $FFFF $FFFF
   }
@@ -1033,10 +1033,10 @@ int page(int size, char *label, char *op, int *errorPtr)
 
   skipList = true;                      // don't display PAGE directive
 
-  // if (pass2 && listFlag) {
-  //   listText(NEW_PAGE_MARKER);
-  //   listText("\n");
-  // }
+  if (pass2 && listFlag) {
+    listText(NEW_PAGE_MARKER);
+    listText("\n");
+  }
 
   return NORMAL;
 }

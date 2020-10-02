@@ -174,12 +174,11 @@ int assembleFile(const char fileName[], const char tempName[], const AnsiString 
       return SEVERE;
     }
 
-    // Unused export options
-    // // if generate listing is checked then create .L68 file
-    // if (Options->chkGenList->Checked) {
-    //   outName = ChangeFileExt(workName, ".L68");
-    //   initList(outName.c_str());                // initialize list file
-    // }
+    // if generate listing is checked then create .L68 file
+    if (listFlag/*Options->chkGenList->Checked*/) {
+      outName = workName + ".L68";
+      initList(outName.c_str());                // initialize list file
+    }
 
     // if Object file flag then create .S68 file (S-Record)
     if (objFlag) {
@@ -365,8 +364,8 @@ int assemble(const char *line, int *errorPtr)
 
   try {
 
-    // if (pass2 && listFlag)
-    //   listLoc();
+    if (pass2 && listFlag)
+      listLoc();
 
     strcap(capLine, line);
     p = skipSpace(capLine);               // skip leading white space
@@ -377,10 +376,10 @@ int assemble(const char *line, int *errorPtr)
       comment = false;
 
     if (comment) {                               // if comment
-      // if (pass2 && listFlag) {
-      //   listLine(line, lineIdent);
-      //   return NORMAL;
-      // }
+      if (pass2 && listFlag) {
+        listLine(line, lineIdent);
+        return NORMAL;
+      }
       }
 
     // conditional assembly for all code

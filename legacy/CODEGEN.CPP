@@ -67,8 +67,8 @@ extern char buffer[256];  //ck used to form messages for display in windows
 
 int output(int	data, int size)
 {
-  // if (listFlag)
-  //   listObj(data, size);
+  if (listFlag)
+    listObj(data, size);
   if (objFlag)
     outputObj(loc, data, size);
   return NORMAL;
