@@ -89,7 +89,7 @@ extern tabTypes tabType;
 extern bool listFlag;
 bool createdL68;                // true when L68 (listing) file is created
 
-int initList(char *name)
+int initList(const char *name)
 {
   try {
     createdL68 = false;
@@ -119,7 +119,7 @@ int initList(char *name)
   }
 }
 
-int listLine(char text[], char lineIdent[])   // ck 4-2006 lineIdent[]
+int listLine(const char text[], char lineIdent[])   // ck 4-2006 lineIdent[]
 {
   // FixedTabSize->Value
   try {

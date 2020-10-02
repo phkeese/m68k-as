@@ -124,9 +124,9 @@ int	doOp(int, int, char, int *);
 
 char	*instLookup(char *, instruction *(*), char *, int *);
 
-int	initList(char *);
+int	initList(const char *);
 
-int	listLine(char[], char[] = "\0");
+int	listLine(const char[], char[] = "\0");
 
 int	listLoc(void);
 
