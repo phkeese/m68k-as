@@ -874,10 +874,11 @@ int tokenize(char *instr, char *delim, char *token[], char *tokens) {
 				   (size < MAX_SIZE - 1)) {
 				// if found '
 				if (*instr == '\'') {
-					if (quoted)
+					if (quoted) {
 						quoted = false;
-					else
+					} else {
 						quoted = true;
+					}
 				}
 				// if found (
 				if (*instr == '(') {
@@ -891,15 +892,17 @@ int tokenize(char *instr, char *delim, char *token[], char *tokens) {
 			tokens[size++] = '\0';	// terminate
 			tokenEnd[tokN] = instr; // save token end position in source line
 									// if not . delimiter
-			if (*instr && (!dotDelimiter || *instr != '.'))
+			if (*instr && (!dotDelimiter || *instr != '.')) {
 				instr++; // skip delimiter
-			tokCount++;	 // count tokens
-			tokN++;		 // next token index
+			}
+			tokCount++; // count tokens
+			tokN++;		// next token index
 			// while (*instr && strchr(delim, *instr))       // skip trailing
 			// delimiters
-			while (*instr &&
-				   isspace(*instr)) // skip trailing spaces *ck 12-10-2005
+			// skip trailing spaces *ck 12-10-2005
+			while (*instr && isspace(*instr)) {
 				instr++;
+			}
 		}
 	}
 	return tokCount;
