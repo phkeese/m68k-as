@@ -158,7 +158,7 @@ extern stack<String, vector<String> > forStack;
 int assembleFile(const char fileName[], const char tempName[], const AnsiString workName)
 {
   AnsiString outName;
-  int i;
+  // int i; // TODO: Remove unused
 
   try {
     tmpFile = fopen(tempName, "w+");
@@ -279,9 +279,9 @@ char *skipSpace(char *p)
 int processFile()
 {
   int error;
-  bool comment;                 // true when line is comment
-  int value;
-  bool backRef;
+  // bool comment;                 // true when line is comment
+  // int value; // TODO: Remove unused
+  // bool backRef;
 
   try {
     offsetMode = false;         // clear flags
