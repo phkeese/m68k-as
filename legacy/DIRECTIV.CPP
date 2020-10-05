@@ -132,7 +132,7 @@ int org(int size, char *label, char *op, int *errorPtr)
 int section(int size, char *label, char *op, int *errorPtr)
 {
   int value;
-  int newLoc;
+  // int newLoc; // TODO: Remove unused
   bool backRef = true;
 
   if (size)
@@ -257,7 +257,7 @@ int equ(int size, char *label, char *op, int *errorPtr)
 {
   int value;
   bool backRef;
-  char *op1;
+  // char *op1; // TODO: Remove unused
 
   if (size)
     NEWERROR(*errorPtr, INV_SIZE_CODE);
@@ -637,17 +637,20 @@ int opt(int size, char *label, char *op, int *errorPtr)
 // }
 int include(int size, char *label, char *fileName, int *errorPtr)
 {
-  char incLine[256], capLine[256];
-  char *src, *dst;
-  int error, i;
-  int tempFP;                          // temporary File Pointer
-  bool comment;                         // true when line is comment
-  int value;
-  bool backRef;
+  // char incLine[256]; // TODO: Remove unused
+  char capLine[256];
+  char *src;
+  char *dst;
+  int error;
+  // int i; // TODO: Remove unused
+  // int tempFP;                          // temporary File Pointer
+  // bool comment;                         // true when line is comment
+  // int value;
+  // bool backRef;
   FILE *incFile;
   FILE *tmpInFile;                      // save current file
   char quote;
-  int lineNumInc;                       // line number for include file
+  // int lineNumInc; // TODO: Remove unused                      // line number for include file
   int lineNumSave;
   char fileNameSave[256];
 
