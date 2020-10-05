@@ -200,18 +200,20 @@ int listCond(bool cond) {
 // Errors are always written to file if possible
 // They are not turned off by NOLIST directive
 int listError(char *lineNum, char *errMsg) {
-	if (!createdL68)
+	if (!createdL68) {
 		return NORMAL;
-	fprintf(listFile, lineNum); // write line number to file
-	fprintf(listFile, errMsg);	// write error message to file
+	}
+	fprintf(listFile, "%s", lineNum); // write line number to file
+	fprintf(listFile, "%s", errMsg);  // write error message to file
 	return NORMAL;
 }
 
 // List text
 int listText(const char *text) {
-	if (!createdL68)
+	if (!createdL68) {
 		return NORMAL;
-	fprintf(listFile, text); // write text to file
+	}
+	fprintf(listFile, "%s", text); // write text to file
 	return NORMAL;
 }
 
