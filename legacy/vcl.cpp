@@ -90,7 +90,8 @@ time_t Now() {
 AnsiString DateTimeToStr(const time_t t) {
 	tm *ltm = localtime(&t);
 	std::stringstream ss;
-	ss << std::setw(2);
-	ss << ltm->tm_mday << "/" << ltm->tm_mon + 1 << "/" << ltm->tm_year + 1900;
-	ss << " " << ltm->tm_hour << ":" << ltm->tm_min << ":" << ltm->tm_sec;
+	ss << std::setfill('0') << std::setw(2);
+	ss << std::setw(2) << ltm->tm_mday << "/" << std::setw(2) << ltm->tm_mon + 1 << "/" << std::setw(2) << ltm->tm_year + 1900;
+	ss << " " << std::setw(2) << ltm->tm_hour << ":" << std::setw(2) << ltm->tm_min << ":" << std::setw(2) << ltm->tm_sec;
+	return ss.str();
 }
