@@ -277,7 +277,7 @@ int equ(int size, char *label, char *op, int *errorPtr)
       }	else {
 	define(label, value, pass2, true, errorPtr);
 	if (pass2 && listFlag && *errorPtr < MINOR) {
-	  sprintf(listPtr, "=%08lX ", value);
+	  sprintf(listPtr, "=%08lX ", (unsigned long)value);
 	  listPtr += 10;
 	}
       }
@@ -320,7 +320,7 @@ int set(int size, char *label, char *op, int *errorPtr)
 	symbol = define(label, value, pass2, false, &error);   // ck 4-18-03
 	symbol->flags |= REDEFINABLE;
 	if (pass2 & listFlag) {
-	  sprintf(listPtr, "=%08lX ", value);
+	  sprintf(listPtr, "=%08lX ", (unsigned long)value);
 	  listPtr += 10;
 	}
       }
@@ -751,7 +751,7 @@ int include(int size, char *label, char *fileName, int *errorPtr)
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'include'. \n");
     printError(NULL, EXCEPTION, 0);
-    return NULL;
+    return NORMAL; // TODO: Why was NULL here?
   }
   return NORMAL;
 }
@@ -840,7 +840,7 @@ int incbin(int size, char *label, char *fileName, int *errorPtr)
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'incbin'. \n");
     printError(NULL, EXCEPTION, 0);
-    return NULL;
+    return NORMAL; // TODO: Why was NULL here?
   }
   return NORMAL;
 }
