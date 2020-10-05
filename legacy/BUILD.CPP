@@ -166,44 +166,44 @@ int	oneOp(int mask, int size,
  *
  ***********************************************************************/
 
-int	arithReg(int mask, int size,
-                 opDescriptor *source, opDescriptor *dest,
-                 int *errorPtr)
-{
-  unsigned short type;
+int arithReg(int mask, int size, opDescriptor *source, opDescriptor *dest,
+			 int *errorPtr) {
+	unsigned short type;
 
-  // Check whether the instruction is an immediate ADDA or SUBA
-  //   that can be assembled as ADDQ or SUBQ
-  type = mask & 0xF000;
-  if ((type == 0xD000 || type == 0x9000)        // if ADDA or SUBA
-        && source->mode == IMMEDIATE
-        && size != BYTE_SIZE
-        && (source->backRef && source->data >= 1 && source->data <= 8)
-        && source->size == 0)                   // not forced Long with #n.L
-    if (type == 0xD000) {       // if ADDA
-      // Assemble as ADDQ
-      if (size == LONG_SIZE)
-        quickMath(0x5080, size, source, dest, errorPtr);
-      else
-        quickMath(0x5040, size, source, dest, errorPtr);
-      return NORMAL;
-    } else {
-      // Assemble as SUBQ
-      if (size == LONG_SIZE)
-        quickMath(0x5180, size, source, dest, errorPtr);
-      else
-        quickMath(0x5140, size, source, dest, errorPtr);
-      return NORMAL;
-    }
-  // Otherwise assemble as an ordinary instruction
-  if (pass2)
-    output((int) (mask | effAddr(source) | (dest->reg << 9)), WORD_SIZE);
-  loc += 2;
-  extWords(source, size, errorPtr);
+	// Check whether the instruction is an immediate ADDA or SUBA
+	//   that can be assembled as ADDQ or SUBQ
+	type = mask & 0xF000;
+	if ((type == 0xD000 || type == 0x9000) // if ADDA or SUBA
+		&& source->mode == IMMEDIATE && size != BYTE_SIZE &&
+		(source->backRef && source->data >= 1 && source->data <= 8) &&
+		source->size == 0) {  // not forced Long with #n.L
+		if (type == 0xD000) { // if ADDA
+			// Assemble as ADDQ
+			if (size == LONG_SIZE) {
+				quickMath(0x5080, size, source, dest, errorPtr);
+			} else {
+				quickMath(0x5040, size, source, dest, errorPtr);
+			}
+			return NORMAL;
+		} else {
+			// Assemble as SUBQ
+			if (size == LONG_SIZE) {
+				quickMath(0x5180, size, source, dest, errorPtr);
+			} else {
+				quickMath(0x5140, size, source, dest, errorPtr);
+			}
+			return NORMAL;
+		}
+	}
+	// Otherwise assemble as an ordinary instruction
+	if (pass2) {
+		output((int)(mask | effAddr(source) | (dest->reg << 9)), WORD_SIZE);
+	}
+	loc += 2;
+	extWords(source, size, errorPtr);
 
-  return NORMAL;
+	return NORMAL;
 }
-
 
 /**********************************************************************
  *
@@ -250,37 +250,42 @@ const int BFEXTU = 0x0100;
 const int BFFFO  = 0x0500;
 const int BFINS  = 0x0700;
 
-int	bitField(int mask, int size,
-                  opDescriptor *source, opDescriptor *dest,
-                  int *errorPtr)
-{
-  unsigned short type;
+int bitField(int mask, int size, opDescriptor *source, opDescriptor *dest,
+			 int *errorPtr) {
+	unsigned short type = 0; // TODO: Check if uninitialized data had a known value in Borland
 
-  if (pass2)
-  {
-    type = mask & 0x0700;
-    if (type == BFINS)
-      output((int) (mask | effAddr(dest)), WORD_SIZE);
-    else
-      output((int) (mask | effAddr(source)), WORD_SIZE);
-    loc += 2;
+	if (pass2) {
+		type = mask & 0x0700;
+		if (type == BFINS) {
+			output((int)(mask | effAddr(dest)), WORD_SIZE);
+		} else {
+			output((int)(mask | effAddr(source)), WORD_SIZE);
+		}
+		loc += 2;
 
-    if (type == BFEXTS || type == BFEXTU || type == BFFFO)
-      source->field |= dest->reg << 12; // put Dn reg number in field
-    if (type == BFINS) {                // if bfins Dn,<ea>{offset:width}
-      dest->field |= source->reg << 12; // put Dn reg number in field
-      output(dest->field, WORD_SIZE);   // field is in destination
-    } else
-      output(source->field, WORD_SIZE); // field is in source
-    loc += 2;
-  } else
-    loc += 4;
-  if (type == BFINS)                    // if bfins Dn,<ea>{offset:width}
-    extWords(dest, size, errorPtr);     // output extension word for dest
-  else
-    extWords(source, size, errorPtr);   // output extension word for source
+		if (type == BFEXTS || type == BFEXTU || type == BFFFO) {
+			source->field |= dest->reg << 12; // put Dn reg number in field
+		}
+		// if bfins Dn,<ea>{offset:width}
+		if (type == BFINS) {
+			dest->field |= source->reg << 12; // put Dn reg number in field
+			output(dest->field, WORD_SIZE);	  // field is in destination
+		} else {
+			// field is in source
+			output(source->field, WORD_SIZE);
+		}
+		loc += 2;
+	} else {
+		loc += 4;
+	}
 
-  return NORMAL;
+	// if bfins Dn,<ea>{offset:width}
+	if (type == BFINS) {
+		extWords(dest, size, errorPtr); // output extension word for dest
+	} else {
+		extWords(source, size, errorPtr); // output extension word for source
+	}
+	return NORMAL;
 }
 
 /**********************************************************************
@@ -295,39 +300,37 @@ int	bitField(int mask, int size,
  *
  ***********************************************************************/
 
+int immedInst(int mask, int size, opDescriptor *source, opDescriptor *dest,
+			  int *errorPtr) {
+	unsigned short type;
 
-int	immedInst(int mask, int size,
-                  opDescriptor *source, opDescriptor *dest,
-                  int *errorPtr)
-{
-  unsigned short type;
+	// Check whether the instruction is an immediate ADD or SUB
+	//   that can be assembled as ADDQ or SUBQ
+	// Check the mask to determine the operation
+	type = mask & 0xFF00;
+	if ((type == 0x0600 || type == 0x0400) &&
+		(source->backRef && source->data >= 1 && source->data <= 8) &&
+		source->size == 0) {
+		if (type == 0x0600) {
+			// Assemble as ADDQ
+			quickMath(0x5000 | (mask & 0x00C0), size, source, dest, errorPtr);
+			return NORMAL;
+		} else {
+			// Assemble as SUBQ
+			quickMath(0x5100 | (mask & 0x00C0), size, source, dest, errorPtr);
+			return NORMAL;
+		}
+	}
+	// Otherwise assemble as an ordinary instruction
+	if (pass2) {
+		output((int)(mask | effAddr(dest)), WORD_SIZE);
+	}
+	loc += 2;
+	extWords(source, size, errorPtr);
+	extWords(dest, size, errorPtr);
 
-  // Check whether the instruction is an immediate ADD or SUB
-  //   that can be assembled as ADDQ or SUBQ
-  // Check the mask to determine the operation
-  type = mask & 0xFF00;
-  if ((type == 0x0600 || type == 0x0400)
-        && (source->backRef && source->data >= 1 && source->data <= 8)
-        && source->size == 0)
-    if (type == 0x0600) {
-      // Assemble as ADDQ
-      quickMath(0x5000 | (mask & 0x00C0), size, source, dest, errorPtr);
-      return NORMAL;
-    } else {
-      // Assemble as SUBQ
-      quickMath(0x5100 | (mask & 0x00C0), size, source, dest, errorPtr);
-      return NORMAL;
-    }
-  // Otherwise assemble as an ordinary instruction
-  if (pass2)
-    output((int) (mask | effAddr(dest)), WORD_SIZE);
-  loc += 2;
-  extWords(source, size, errorPtr);
-  extWords(dest, size, errorPtr);
-
-  return NORMAL;
+	return NORMAL;
 }
-
 
 /**********************************************************************
  *
