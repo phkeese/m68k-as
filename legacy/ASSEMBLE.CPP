@@ -224,7 +224,7 @@ int assembleFile(const char fileName[], const char tempName[], const AnsiString 
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'assembleFile'. \n");
     printError(NULL, EXCEPTION, 0);
-    return NULL;
+    return NORMAL; // TODO: Why was NULL here?
   }
 
   return NORMAL;
@@ -252,7 +252,7 @@ int strcap(char *d, const char *s)
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'strcap'. \n");
     printError(NULL, EXCEPTION, 0);
-    return NULL;
+    return NORMAL; // TODO: Why was NULL here?
   }
 
   return NORMAL;
@@ -346,7 +346,7 @@ int processFile()
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'processFile'. \n");
     printError(NULL, EXCEPTION, 0);
-    return NULL;
+    return NORMAL; // TODO: Why was NULL here?
   }
 
   return NORMAL;
@@ -566,7 +566,7 @@ int assemble(const char *line, int *errorPtr)
   catch( ... ) {
     NEWERROR(*errorPtr, EXCEPTION);
     sprintf(buffer, "ERROR: An exception occurred in routine 'assemble'. \n");
-    return NULL;
+    return NORMAL; // TODO: Why was NULL here?
   }
 
   return NORMAL;
