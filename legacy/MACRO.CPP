@@ -74,54 +74,62 @@ bool noENDM;                    // set true if no ENDM in macro
 // Define macro
 // Save file pointer to macro, define macro name, move file pointer
 //  past ENDM directive.
-int macro(int size, char *label, char *op, int *errorPtr)
-{
-  symbolDef *symbol;
-  int error;
-  const int MAXT = 128;           // maximum number of tokens
-  char *token[MAXT];              // pointers to tokens
-  char tokens[MAC_SIZE];          // place tokens here
+int macro(int size, char *label, char *op, int *errorPtr) {
+	symbolDef *symbol;
+	int error;
+	const int MAXT = 128;  // maximum number of tokens
+	char *token[MAXT];	   // pointers to tokens
+	char tokens[MAC_SIZE]; // place tokens here
 
-  if (size)
-    NEWERROR(*errorPtr, INV_SIZE_CODE);
-  error = OK;
+	if (size) {
+		NEWERROR(*errorPtr, INV_SIZE_CODE);
+	}
+	error = OK;
 
-  fseek(tmpFile,0,SEEK_END);    // prepare tmpFile to receive next macro
+	fseek(tmpFile, 0, SEEK_END); // prepare tmpFile to receive next macro
 
-  if (pass == 0)
-    macroFP = ftell(tmpFile);           // save location of macro in tempFile
-  // put macro and it's file pointer in symbol table
-  symbol = define(label, macroFP, pass2, true, &error);
-  if (error == MULTIPLE_DEFS) {         // ignore all errors except MULTIPLE_DEFS
-    NEWERROR(*errorPtr, MULTIPLE_DEFS);
-    return NORMAL;
-  }
-  symbol->flags |= MACRO_SYM;         // set MACRO_SYM flag
+	if (pass == 0) {
+		macroFP = ftell(tmpFile); // save location of macro in tempFile
+	}
+	// put macro and it's file pointer in symbol table
+	symbol = define(label, macroFP, pass2, true, &error);
+	if (error == MULTIPLE_DEFS) { // ignore all errors except MULTIPLE_DEFS
+		NEWERROR(*errorPtr, MULTIPLE_DEFS);
+		return NORMAL;
+	}
+	symbol->flags |= MACRO_SYM; // set MACRO_SYM flag
 
-  if (pass2 && listFlag)
-    listLine(line);
+	if (pass2 && listFlag) {
+		listLine(line);
+	}
 
-  // move file pointer past ENDM directive
-  while(fgets(line, 256, inFile)) {
-    if (pass == 0)
-      fprintf(tmpFile, line);           // write macro line to tmpFile
-    lineNum++;
-    tokenize(line, " \t\n", token, tokens);
-    if(!(stricmp(token[1], "MACRO"))) { // if unexpected MACRO opcode
-      NEWERROR(*errorPtr, NO_ENDM);     // no ENDM found
-      noENDM = true;
-      return NULL;
-    }
-    if(!(stricmp(token[1], "ENDM")))     // if ENDM opcode
-      return NORMAL;
-    if (pass2 && listFlag)
-      listLine(line);
-  }
-  NEWERROR(*errorPtr, NO_ENDM);         // no ENDM found
-  noENDM = true;
-  return NULL;
+	// move file pointer past ENDM directive
+	while (fgets(line, 256, inFile)) {
+		if (pass == 0) {
+			fprintf(tmpFile, line); // write macro line to tmpFile
+		}
+		lineNum++;
+		tokenize(line, " \t\n", token, tokens);
+		// if unexpected MACRO opcode
+		if (!(stricmp(token[1], "MACRO"))) {
+			// no ENDM found
+			NEWERROR(*errorPtr, NO_ENDM);
+			noENDM = true;
+			return NULL;
+		}
+		// if ENDM opcode
+		if (!(stricmp(token[1], "ENDM"))) {
+			return NORMAL;
+		}
+		if (pass2 && listFlag) {
+			listLine(line);
+		}
+	}
+	// no ENDM found
+	NEWERROR(*errorPtr, NO_ENDM);
+	noENDM = true;
+	return NULL;
 }
-
 
 //--------------------------------------------------------
 // Assemble macro
