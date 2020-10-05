@@ -123,15 +123,14 @@ int listLine(const char text[], char lineIdent[]) // ck 4-2006 lineIdent[]
 	try {
 		if (!createdL68)
 			return NORMAL;
-		TTextStuff *Active =
-			(TTextStuff *)Main->ActiveMDIChild; // grab active mdi child
+		// TTextStuff *Active =	(TTextStuff *)Main->ActiveMDIChild; // grab active mdi child
 		fprintf(listFile, "%-32.32s", listData);
 		if (!continuation) {
 			// replace tab with spaces
 			int i = 0, j = 0, k, t;
 			while (text[i] && j < 255 - 8) {
 				if (text[i] == '\t') { // if tab
-					if (Active->Project.TabType == Assembly) {
+					if (true/*Active->Project.TabType == Assembly*/) { // TODO: Find out what these settings are in normal operation
 						if (j <= TAB1)
 							t = TAB1 - j;
 						else if (j <= TAB2)
@@ -139,8 +138,9 @@ int listLine(const char text[], char lineIdent[]) // ck 4-2006 lineIdent[]
 						else
 							t = TAB3 - j;
 					} else { // else fixed tabs
-						t = Active->Project.TabSize -
-							(j % Active->Project.TabSize);
+						// TODO: Set these correctly once we know what the settings are
+						// t = Active->Project.TabSize -
+						// 	(j % Active->Project.TabSize);
 					}
 					for (k = 0; k < t; k++) // replace with spaces
 						buffer[j++] = ' ';
