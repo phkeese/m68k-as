@@ -253,40 +253,37 @@ int funct_end(int size, char *label, char *op, int *errorPtr)
  *	EQU directive.
  ***********************************************************************/
 
-int equ(int size, char *label, char *op, int *errorPtr)
-{
-  int value;
-  bool backRef;
-  // char *op1; // TODO: Remove unused
+int equ(int size, char *label, char *op, int *errorPtr) {
+	int value;
+	bool backRef;
+	// char *op1; // TODO: Remove unused
 
-  if (size)
-    NEWERROR(*errorPtr, INV_SIZE_CODE);
-  if (!*op) {
-    NEWERROR(*errorPtr, SYNTAX);
-    return NORMAL;
-  }
-
-  op = eval(op, &value, &backRef, errorPtr);
-  if (*errorPtr < SEVERE && !backRef) {
-    NEWERROR(*errorPtr, INV_FORWARD_REF);
-  }
-  else if (*errorPtr < ERRORN)
-    if (isspace(*op) || !*op)
-      if (!*label) {
-	NEWERROR(*errorPtr, LABEL_REQUIRED);
-      }	else {
-	define(label, value, pass2, true, errorPtr);
-	if (pass2 && listFlag && *errorPtr < MINOR) {
-	  sprintf(listPtr, "=%08lX ", (unsigned long)value);
-	  listPtr += 10;
+	if (size)
+		NEWERROR(*errorPtr, INV_SIZE_CODE);
+	if (!*op) {
+		NEWERROR(*errorPtr, SYNTAX);
+		return NORMAL;
 	}
-      }
-    else
-      NEWERROR(*errorPtr, SYNTAX);
 
-  return NORMAL;
+	op = eval(op, &value, &backRef, errorPtr);
+	if (*errorPtr < SEVERE && !backRef) {
+		NEWERROR(*errorPtr, INV_FORWARD_REF);
+	} else if (*errorPtr < ERRORN)
+		if (isspace(*op) || !*op)
+			if (!*label) {
+				NEWERROR(*errorPtr, LABEL_REQUIRED);
+			} else {
+				define(label, value, pass2, true, errorPtr);
+				if (pass2 && listFlag && *errorPtr < MINOR) {
+					sprintf(listPtr, "=%08lX ", (unsigned long)value);
+					listPtr += 10;
+				}
+			}
+		else
+			NEWERROR(*errorPtr, SYNTAX);
+
+	return NORMAL;
 }
-
 
 /***********************************************************************
  *	SET directive.
