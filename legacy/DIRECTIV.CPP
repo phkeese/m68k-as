@@ -258,8 +258,9 @@ int equ(int size, char *label, char *op, int *errorPtr) {
 	bool backRef;
 	// char *op1; // TODO: Remove unused
 
-	if (size)
+	if (size) {
 		NEWERROR(*errorPtr, INV_SIZE_CODE);
+	}
 	if (!*op) {
 		NEWERROR(*errorPtr, SYNTAX);
 		return NORMAL;
@@ -268,7 +269,7 @@ int equ(int size, char *label, char *op, int *errorPtr) {
 	op = eval(op, &value, &backRef, errorPtr);
 	if (*errorPtr < SEVERE && !backRef) {
 		NEWERROR(*errorPtr, INV_FORWARD_REF);
-	} else if (*errorPtr < ERRORN)
+	} else if (*errorPtr < ERRORN) {
 		if (isspace(*op) || !*op)
 			if (!*label) {
 				NEWERROR(*errorPtr, LABEL_REQUIRED);
@@ -279,8 +280,10 @@ int equ(int size, char *label, char *op, int *errorPtr) {
 					listPtr += 10;
 				}
 			}
-		else
+		else {
 			NEWERROR(*errorPtr, SYNTAX);
+		}
+	}
 
 	return NORMAL;
 }
