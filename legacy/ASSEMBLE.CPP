@@ -792,17 +792,16 @@ char *fieldParse(char *p, opDescriptor *d, int *errorPtr)
 }
 
 //-------------------------------------------------------
-int pickMask(int size, flavor *flavorPtr, int *errorPtr)
-{
-  if (!size || size & flavorPtr->sizes)
-    if (size & (BYTE_SIZE | SHORT_SIZE))
-      return flavorPtr->bytemask;
-  else if (!size || size == WORD_SIZE)
-    return flavorPtr->wordmask;
-  else
-    return flavorPtr->longmask;
-  NEWERROR(*errorPtr, INV_SIZE_CODE);
-  return flavorPtr->wordmask;
+int pickMask(int size, flavor *flavorPtr, int *errorPtr) {
+	if (!size || size & flavorPtr->sizes)
+		if (size & (BYTE_SIZE | SHORT_SIZE))
+			return flavorPtr->bytemask;
+		else if (!size || size == WORD_SIZE)
+			return flavorPtr->wordmask;
+		else
+			return flavorPtr->longmask;
+	NEWERROR(*errorPtr, INV_SIZE_CODE);
+	return flavorPtr->wordmask;
 }
 
 //---------------------------------------------------
