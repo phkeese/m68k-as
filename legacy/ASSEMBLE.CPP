@@ -822,66 +822,73 @@ int pickMask(int size, flavor *flavorPtr, int *errorPtr) {
 //      token[] = pointers to tokens
 //      tokens = new string full of tokens
 // Returns number of tokens extracted.
-int tokenize(char* instr, char* delim, char *token[], char* tokens){
-  int i, size, tokN = 0, tokCount = 0;
-  char* start;
-  int parenCount;
-  bool dotDelimiter;
-  bool quoted = false;
+int tokenize(char *instr, char *delim, char *token[], char *tokens) {
+	int i, size, tokN = 0, tokCount = 0;
+	char *start;
+	int parenCount;
+	bool dotDelimiter;
+	bool quoted = false;
 
-  dotDelimiter = (strchr(delim, '.'));  // set true if . is a delimiter
-  // clear token pointers
-  for (i=0; i<MAXT; i++) {
-    token[i] = empty_string;           // this makes the pointer point to empty
-    tokenEnd[i] = NULL;         // clear positions
-  }
+	dotDelimiter = (strchr(delim, '.')); // set true if . is a delimiter
+	// clear token pointers
+	for (i = 0; i < MAXT; i++) {
+		token[i] = empty_string; // this makes the pointer point to empty
+		tokenEnd[i] = NULL;		 // clear positions
+	}
 
-  start = instr;
-  while(*instr && isspace(*instr))              // skip leading spaces
-    instr++;
-  if (*instr != '*' && *instr != ';') {         // if not comment line
-    if (start != instr)                         // if no label
-      tokN = 1;
-    size = 0;
-    while (*instr && tokN < MAXT && size < MAX_SIZE) { // while tokens remain
-      parenCount = 0;
-      token[tokN] = &tokens[size];              // pointer to token
-      //while (*instr && strchr(delim, *instr))   // skip leading delimiters
-      while(*instr && isspace(*instr))              // skip leading spaces
-        instr++;
-      if (*instr == '\'' && *(instr+1) == '\'') { // if argument starts with '' (NULL)
-        tokens[size++] = '\0';
-        instr+=2;
-      }
-      if (dotDelimiter && *instr == '.') {      // if . delimiter
-        tokens[size++] = *instr++;              // start token with .
-      }
-      // while more chars AND (not delimiter OR inside parens) AND token size limit not reached OR quoted
-      while (*instr && (!(strchr(delim, *instr)) || parenCount > 0 || quoted) && (size < MAX_SIZE-1) ) {
-        if (*instr == '\'')                     // if found '
-          if (quoted)
-            quoted = false;
-          else
-            quoted = true;
-        if (*instr == '(')                      // if found (
-          parenCount++;
-        else if (*instr == ')')
-          parenCount--;
-        tokens[size++] = *instr++;
-      }
+	start = instr;
+	while (*instr && isspace(*instr)) // skip leading spaces
+		instr++;
+	if (*instr != '*' && *instr != ';') { // if not comment line
+		if (start != instr)				  // if no label
+			tokN = 1;
+		size = 0;
+		while (*instr && tokN < MAXT &&
+			   size < MAX_SIZE) { // while tokens remain
+			parenCount = 0;
+			token[tokN] = &tokens[size]; // pointer to token
+			// while (*instr && strchr(delim, *instr))   // skip leading
+			// delimiters
+			while (*instr && isspace(*instr)) // skip leading spaces
+				instr++;
+			if (*instr == '\'' &&
+				*(instr + 1) == '\'') { // if argument starts with '' (NULL)
+				tokens[size++] = '\0';
+				instr += 2;
+			}
+			if (dotDelimiter && *instr == '.') { // if . delimiter
+				tokens[size++] = *instr++;		 // start token with .
+			}
+			// while more chars AND (not delimiter OR inside parens) AND token
+			// size limit not reached OR quoted
+			while (*instr &&
+				   (!(strchr(delim, *instr)) || parenCount > 0 || quoted) &&
+				   (size < MAX_SIZE - 1)) {
+				if (*instr == '\'') // if found '
+					if (quoted)
+						quoted = false;
+					else
+						quoted = true;
+				if (*instr == '(') // if found (
+					parenCount++;
+				else if (*instr == ')')
+					parenCount--;
+				tokens[size++] = *instr++;
+			}
 
-      tokens[size++] = '\0';                    // terminate
-      tokenEnd[tokN] = instr;                   // save token end position in source line
-      if (*instr && (!dotDelimiter || *instr != '.')) // if not . delimiter
-        instr++;                                // skip delimiter
-      tokCount++;                               // count tokens
-      tokN++;                                   // next token index
-      //while (*instr && strchr(delim, *instr))       // skip trailing delimiters
-      while (*instr && isspace(*instr))         // skip trailing spaces *ck 12-10-2005
-        instr++;
-    }
-  }
-  return tokCount;
+			tokens[size++] = '\0';	// terminate
+			tokenEnd[tokN] = instr; // save token end position in source line
+			if (*instr &&
+				(!dotDelimiter || *instr != '.')) // if not . delimiter
+				instr++;						  // skip delimiter
+			tokCount++;							  // count tokens
+			tokN++;								  // next token index
+			// while (*instr && strchr(delim, *instr))       // skip trailing
+			// delimiters
+			while (*instr &&
+				   isspace(*instr)) // skip trailing spaces *ck 12-10-2005
+				instr++;
+		}
+	}
+	return tokCount;
 }
-
-
