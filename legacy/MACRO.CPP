@@ -106,7 +106,7 @@ int macro(int size, char *label, char *op, int *errorPtr) {
 	// move file pointer past ENDM directive
 	while (fgets(line, 256, inFile)) {
 		if (pass == 0) {
-			fprintf(tmpFile, line); // write macro line to tmpFile
+			fprintf(tmpFile, "%s", line); // write macro line to tmpFile
 		}
 		lineNum++;
 		tokenize(line, " \t\n", token, tokens);
@@ -115,7 +115,7 @@ int macro(int size, char *label, char *op, int *errorPtr) {
 			// no ENDM found
 			NEWERROR(*errorPtr, NO_ENDM);
 			noENDM = true;
-			return NULL;
+			return NORMAL; // TODO: Why was NULL here?
 		}
 		// if ENDM opcode
 		if (!(stricmp(token[1], "ENDM"))) {
@@ -128,7 +128,7 @@ int macro(int size, char *label, char *op, int *errorPtr) {
 	// no ENDM found
 	NEWERROR(*errorPtr, NO_ENDM);
 	noENDM = true;
-	return NULL;
+	return NORMAL; // TODO: Why was NULL here?
 }
 
 //--------------------------------------------------------
@@ -148,7 +148,7 @@ int asmMacro(int size, char *label, char *arg, int *errorPtr)
   const int MAX_SIZE = 512;       // maximun size of input line
   char *token[MAXT];              // pointers to tokens
   char tokens[MAX_SIZE];          // place tokens here
-  char *tokenEnd[MAXT];           // where tokens end in source line
+  // char *tokenEnd[MAXT];           // where tokens end in source line
   int error, argN, i, n;
   int tempFP;                           // temporary File Pointer
   int value;
