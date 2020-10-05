@@ -221,8 +221,8 @@ int asmMacro(int size, char *label, char *arg, int *errorPtr)
         if (pass2) {
           if (listFlag) {
             printError(listFile, *errorPtr, lineNum);
-            // if (!skipList)
-            //   listLine(line, lineIdent);
+            if (!skipList)
+              listLine(line, lineIdent);
           } else {
             printError(NULL, *errorPtr, lineNum);
           }

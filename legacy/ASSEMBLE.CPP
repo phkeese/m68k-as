@@ -193,7 +193,7 @@ int assembleFile(const char fileName[], const char tempName[], const AnsiString 
     // Close files and print error and warning counts
     fclose(inFile);
     fclose(tmpFile);
-    // finishList();
+    finishList();
     if (objFlag)
       finishObj();
 
@@ -555,10 +555,10 @@ int assemble(const char *line, int *errorPtr)
       printError(listFile, *errorPtr, lineNum);
       if (printCond && !skipList)
       {
-        // listCond(skipCond);
-        // listLine(line, lineIdent);
+        listCond(skipCond);
+        listLine(line, lineIdent);
       } else if ( (listFlag && (!skipCond && !skipList)) || *errorPtr > WARNING) {
-        // listLine(line, lineIdent);
+        listLine(line, lineIdent);
       }
     }
 
@@ -620,7 +620,7 @@ int createCode(char *capLine, int *errorPtr) {
       //   the listing before assembling an instruction
       if (loc & 1) {
         loc++;
-        // listLoc();
+        listLoc();
       }
       if (*label)
         define(label, loc, pass2, true, errorPtr);

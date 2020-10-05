@@ -292,11 +292,11 @@ int asmStructure(int size, char *label, char *arg, int *errorPtr)
     if (pass2 && listFlag) {
       if (!(macroNestLevel > 0 && skipList == true)) // if not called from macro with listing off
       {
-        // listLoc();
-        // if (macroNestLevel > 0)             // if called from macro
-        //   listLine(line, lineIdent);        // tag line as macro
-        // else
-        //   listLine(line);
+        listLoc();
+        if (macroNestLevel > 0)             // if called from macro
+          listLine(line, lineIdent);        // tag line as macro
+        else
+          listLine(line);
       }
     }
 

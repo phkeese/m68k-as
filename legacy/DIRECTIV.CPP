@@ -118,7 +118,7 @@ int org(int size, char *label, char *op, int *errorPtr)
       if (*label)
 	      define(label, loc, pass2, true, errorPtr);
       // Show new location counter on listing
-      // listLoc();
+      listLoc();
     }
     else
       NEWERROR(*errorPtr, SYNTAX);
@@ -156,7 +156,7 @@ int section(int size, char *label, char *op, int *errorPtr)
       loc = sectionLoc[value];            // set loc to new section
       sectI = value;                      // new section number
       // Show new location counter on listing
-      // listLoc();
+      listLoc();
     } else {
       NEWERROR(*errorPtr, SYNTAX);
     }
@@ -196,7 +196,7 @@ int offset(int size, char *label, char *op, int *errorPtr)
       }
       loc = newLoc;
       // Show new location counter on listing
-      // listLoc();
+      listLoc();
     }
     else
       NEWERROR(*errorPtr, SYNTAX);
@@ -354,7 +354,7 @@ int dc(int size, char *label, char *op, int *errorPtr)
     loc++;
   }
   showEqual = true;
-  // listLoc();
+  listLoc();
   showEqual = false;
   // Define the label attached to this directive, if any
   if (*label)
@@ -463,7 +463,7 @@ int dcb(int size, char *label, char *op, int *errorPtr)
     loc++;
   }
   showEqual = true;
-  // listLoc();
+  listLoc();
   showEqual = false;
 
   // Define the label attached to this directive, if any
@@ -530,7 +530,7 @@ int ds(int size, char *label, char *op, int *errorPtr)
   // DS.W or DS.L (but not if doing DS.B, so DS.B's can be contiguous)
   if ((size & (WORD_SIZE | LONG_SIZE)) && (loc & 1)) {
     loc++;
-    // listLoc();
+    listLoc();
   }
 
   // Define the label attached to this directive, if any
@@ -1002,7 +1002,7 @@ int simhalt(int size, char *label, char *op, int *errorPtr)
   if (loc & 1)
     loc++;
 
-  // listLoc();
+  listLoc();
 
   // Define the label attached to this directive, if any
   if (*label)
