@@ -1,0 +1,35 @@
+00000000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 05/10/2020 16:08:03
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title         : Tutorial 4 for EASy68k
+00000000                             3  * Written by    : Chuck Kelly
+00000000                             4  * Date Created  : Nov-10-2012
+00000000                             5  * Feb-14-2013 by CK, Comment change
+00000000                             6  * Description   : This program demonstrates how to pass
+00000000                             7  * parameters and return values from a subroutine.
+00000000                             8  *    Adder1 subroutine uses registers to pass the parameters.
+00000000                             9  *    Adder2 subroutine uses the stack to pass the parameters.
+00000000                            10  * This program is public domain.
+00000000                            11  *-----------------------------------------------------------
+00001000                            12      * Input 2 numbers and add them with Adder1 subroutine.
+00001000                            13      * The parameters and return value are passed using registers
+00001040                            14      * Input 2 numbers and add them with Adder2 subroutine.
+00001040                            15      * The parameters and return value are passed on the stack
+0000108E                            16      SIMHALT stop program execution
+00001092                            17  *------------------------------------
+00001092                            18  * Add the number in register D1 to the number in register D2.
+00001092                            19  * The sum is returned in register D1. 
+00001092                            20  * D1 = D1 + D2
+00001096                            21  *------------------------------------
+00001096                            22  * Add two numbers passed as parameters on the stack.
+00001096                            23  * The sum is returned on the stack. 
+00001096                            24  * The OFFSET directive is used to access the parameters by name.
+00001096                            25  * 4 bytes for A0 saved by link, 4 bytes for return address
+000010AE                            26  *------------------------------------
+000010AE                            27  * Subroutine to display Carriage Return and Line Feed
+000010C4                            28  *------------------------------------
+000010C4                            29  * Variable storage and strings
+000010C4                            30  * ds (define storage) is used to reserve memory for variables
+000010C4                            31  * dc (define constant) is used to place data in memory
