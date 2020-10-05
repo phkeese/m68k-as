@@ -207,7 +207,7 @@ int assembleFile(const char fileName[], const char tempName[], const AnsiString 
     while(forStack.empty() == false)
       forStack.pop();
 
-    //   // minimize message area if no errors or warnings
+    //   // minimize message area if no errors or warnings // TODO: Remove UI code
     // if (warningCount == 0 && errorCount == 0) {
     //   TTextStuff *Active = (TTextStuff*)Main->ActiveMDIChild; //grab active mdi child
     //     Active->Messages->Height = 7;
