@@ -158,7 +158,7 @@ extern stack<String, vector<String> > forStack;
 int assembleFile(const char fileName[], const char tempName[], const AnsiString workName)
 {
   AnsiString outName;
-  // int i; // TODO: Remove unused variable
+  int i;
 
   try {
     tmpFile = fopen(tempName, "w+");
@@ -224,7 +224,7 @@ int assembleFile(const char fileName[], const char tempName[], const AnsiString 
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'assembleFile'. \n");
     printError(NULL, EXCEPTION, 0);
-    return NORMAL;  // TODO: Why was NULL here?
+    return NULL;
   }
 
   return NORMAL;
@@ -252,7 +252,7 @@ int strcap(char *d, const char *s)
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'strcap'. \n");
     printError(NULL, EXCEPTION, 0);
-    return NORMAL; // TODO: Why was NULL here?
+    return NULL;
   }
 
   return NORMAL;
@@ -279,10 +279,9 @@ char *skipSpace(char *p)
 int processFile()
 {
   int error;
-  // TODO: Remove unused
-  // bool comment;                 // true when line is comment
-  // int value;
-  // bool backRef;
+  bool comment;                 // true when line is comment
+  int value;
+  bool backRef;
 
   try {
     offsetMode = false;         // clear flags
@@ -347,7 +346,7 @@ int processFile()
   catch( ... ) {
     sprintf(buffer, "ERROR: An exception occurred in routine 'processFile'. \n");
     printError(NULL, EXCEPTION, 0);
-    return NORMAL; // TODO: Why was NULL here?
+    return NULL;
   }
 
   return NORMAL;
@@ -567,7 +566,7 @@ int assemble(const char *line, int *errorPtr)
   catch( ... ) {
     NEWERROR(*errorPtr, EXCEPTION);
     sprintf(buffer, "ERROR: An exception occurred in routine 'assemble'. \n");
-    return NORMAL; // TODO: Why was NULL here?
+    return NULL;
   }
 
   return NORMAL;
@@ -793,18 +792,17 @@ char *fieldParse(char *p, opDescriptor *d, int *errorPtr)
 }
 
 //-------------------------------------------------------
-int pickMask(int size, flavor *flavorPtr, int *errorPtr) {
-	if (!size || size & flavorPtr->sizes) {
-		if (size & (BYTE_SIZE | SHORT_SIZE)) {
-			return flavorPtr->bytemask;
-		} else if (!size || size == WORD_SIZE) {
-			return flavorPtr->wordmask;
-		}
-	} else {
-		return flavorPtr->longmask;
-	}
-	NEWERROR(*errorPtr, INV_SIZE_CODE);
-	return flavorPtr->wordmask;
+int pickMask(int size, flavor *flavorPtr, int *errorPtr)
+{
+  if (!size || size & flavorPtr->sizes)
+    if (size & (BYTE_SIZE | SHORT_SIZE))
+      return flavorPtr->bytemask;
+  else if (!size || size == WORD_SIZE)
+    return flavorPtr->wordmask;
+  else
+    return flavorPtr->longmask;
+  NEWERROR(*errorPtr, INV_SIZE_CODE);
+  return flavorPtr->wordmask;
 }
 
 //---------------------------------------------------
@@ -857,27 +855,21 @@ int tokenize(char* instr, char* delim, char *token[], char* tokens){
       if (dotDelimiter && *instr == '.') {      // if . delimiter
         tokens[size++] = *instr++;              // start token with .
       }
-	  // while more chars AND (not delimiter OR inside parens) AND token size
-	  // limit not reached OR quoted
-	  while (*instr && (!(strchr(delim, *instr)) || parenCount > 0 || quoted) &&
-			 (size < MAX_SIZE - 1)) {
-		  if (*instr == '\'') {
-			  // if found '
-			  if (quoted) {
-				  quoted = false;
-			  } else {
-				  quoted = true;
-			  }
-		  }
-		  if (*instr == '(') { // if found (
-			  parenCount++;
-		  } else if (*instr == ')') {
-			  parenCount--;
-		  }
-		  tokens[size++] = *instr++;
-	  }
+      // while more chars AND (not delimiter OR inside parens) AND token size limit not reached OR quoted
+      while (*instr && (!(strchr(delim, *instr)) || parenCount > 0 || quoted) && (size < MAX_SIZE-1) ) {
+        if (*instr == '\'')                     // if found '
+          if (quoted)
+            quoted = false;
+          else
+            quoted = true;
+        if (*instr == '(')                      // if found (
+          parenCount++;
+        else if (*instr == ')')
+          parenCount--;
+        tokens[size++] = *instr++;
+      }
 
-	  tokens[size++] = '\0';                    // terminate
+      tokens[size++] = '\0';                    // terminate
       tokenEnd[tokN] = instr;                   // save token end position in source line
       if (*instr && (!dotDelimiter || *instr != '.')) // if not . delimiter
         instr++;                                // skip delimiter
