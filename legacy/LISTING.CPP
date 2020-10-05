@@ -177,9 +177,9 @@ int listLine(const char text[], char lineIdent[]) // ck 4-2006 lineIdent[]
 
 int listLoc() {
 	if (offsetMode || showEqual)
-		sprintf(listData, "%08lX= ", loc);
+		sprintf(listData, "%08lX= ", (unsigned long)loc);
 	else
-		sprintf(listData, "%08lX  ", loc);
+		sprintf(listData, "%08lX  ", (unsigned long)loc);
 	listPtr = listData + 10;
 
 	return NORMAL;
@@ -236,7 +236,7 @@ int listObj(int data, int size) {
 		listPtr += 5;
 		break;
 	case LONG_SIZE:
-		sprintf(listPtr, "%08lX ", data);
+		sprintf(listPtr, "%08lX ", (unsigned long)data);
 		listPtr += 9;
 		break;
 	default:
@@ -274,7 +274,7 @@ int finishList() {
 
 		// write starting address to first line of file
 		rewind(listFile); // rewind to start of file
-		fprintf(listFile, "%08lX", startAddress);
+		fprintf(listFile, "%08lX", (unsigned long)startAddress);
 
 		fclose(listFile);
 		return NORMAL;
