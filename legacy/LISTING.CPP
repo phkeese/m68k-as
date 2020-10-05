@@ -58,7 +58,7 @@
 #include "asm.h"
 #include "editorOptions.h"
 #include "mainS.h"
-#include "texts.h"
+// #include "texts.h" // TODO: Remove unused
 #include <ctype.h>
 #include <stdio.h>
 #include <vcl.h>
