@@ -310,8 +310,8 @@ int set(int size, char *label, char *op, int *errorPtr) {
 	//    NEWERROR(*errorPtr, INV_FORWARD_REF);
 	//  }
 	//  else
-	if (*errorPtr < ERRORN) // ck 4-18-03
-		if (isspace(*op) || !*op)
+	if (*errorPtr < ERRORN) { // ck 4-18-03
+		if (isspace(*op) || !*op) {
 			if (!*label) {
 				NEWERROR(*errorPtr, LABEL_REQUIRED);
 			} else {
@@ -324,8 +324,10 @@ int set(int size, char *label, char *op, int *errorPtr) {
 					listPtr += 10;
 				}
 			}
-		else
+		} else {
 			NEWERROR(*errorPtr, SYNTAX);
+		}
+	}
 
 	return NORMAL;
 }
