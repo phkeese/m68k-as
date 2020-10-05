@@ -292,44 +292,43 @@ int equ(int size, char *label, char *op, int *errorPtr) {
  *	SET directive.
  ***********************************************************************/
 
-int set(int size, char *label, char *op, int *errorPtr)
-{
-  int value;
-  int  error;
-  bool backRef;
-  symbolDef *symbol;
+int set(int size, char *label, char *op, int *errorPtr) {
+	int value;
+	int error;
+	bool backRef;
+	symbolDef *symbol;
 
-  if (size)
-    NEWERROR(*errorPtr, INV_SIZE_CODE);
-  if (!*op) {
-    NEWERROR(*errorPtr, SYNTAX);
-    return NORMAL;
-  }
-  error = OK;
-  op = eval(op, &value, &backRef, errorPtr);
-//  if (*errorPtr < SEVERE && !backRef) {       // ck 4-18-03
-//    NEWERROR(*errorPtr, INV_FORWARD_REF);
-//  }
-//  else
-   if (*errorPtr < ERRORN)          // ck 4-18-03
-    if (isspace(*op) || !*op)
-      if (!*label) {
-	NEWERROR(*errorPtr, LABEL_REQUIRED);
-      } else {
-	error = OK;
-	symbol = define(label, value, pass2, false, &error);   // ck 4-18-03
-	symbol->flags |= REDEFINABLE;
-	if (pass2 & listFlag) {
-	  sprintf(listPtr, "=%08lX ", (unsigned long)value);
-	  listPtr += 10;
+	if (size)
+		NEWERROR(*errorPtr, INV_SIZE_CODE);
+	if (!*op) {
+		NEWERROR(*errorPtr, SYNTAX);
+		return NORMAL;
 	}
-      }
-    else
-      NEWERROR(*errorPtr, SYNTAX);
+	error = OK;
+	op = eval(op, &value, &backRef, errorPtr);
+	//  if (*errorPtr < SEVERE && !backRef) {       // ck 4-18-03
+	//    NEWERROR(*errorPtr, INV_FORWARD_REF);
+	//  }
+	//  else
+	if (*errorPtr < ERRORN) // ck 4-18-03
+		if (isspace(*op) || !*op)
+			if (!*label) {
+				NEWERROR(*errorPtr, LABEL_REQUIRED);
+			} else {
+				error = OK;
+				symbol =
+					define(label, value, pass2, false, &error); // ck 4-18-03
+				symbol->flags |= REDEFINABLE;
+				if (pass2 & listFlag) {
+					sprintf(listPtr, "=%08lX ", (unsigned long)value);
+					listPtr += 10;
+				}
+			}
+		else
+			NEWERROR(*errorPtr, SYNTAX);
 
-  return NORMAL;
+	return NORMAL;
 }
-
 
 /***********************************************************************
  *	DC directive.
