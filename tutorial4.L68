@@ -1,6 +1,6 @@
 00001000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 05/10/2020 16:22:53
+Created On: 05/10/2020 16:27:48
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title         : Tutorial 4 for EASy68k
@@ -121,11 +121,29 @@ Created On: 05/10/2020 16:22:53
 000010C4                           117  * Variable storage and strings
 000010C4                           118  * ds (define storage) is used to reserve memory for variables
 000010C4                           119  * dc (define constant) is used to place data in memory
-000010C4= 45 6E 74 65 72 20 ...    120  prompt  dc.b    'Enter number: ',0  null terminated string
-000010D3= 54 68 65 20 73 75 ...    121  result  dc.b    'The sum is: ',0
-000010E0= 0D 0A 00                 122  crlf    dc.b    $d,$a,0         carriage return & line feed, null
-000010E3                           123  
-000010E3                           124          END     START           end of program with start address specified
+000010C4= 45 6E 74 65 72 20 6E     120  prompt  dc.b    'Enter number: ',0  null terminated string
+          75 6D 62 65 72 3A 20  
+          00                    
+000010D3= 54 68 65 20 73 75 6D     123  result  dc.b    'The sum is: ',0
+          20 69 73 3A 20 00     
+000010E0= 0D 0A 00                 125  crlf    dc.b    $d,$a,0         carriage return & line feed, null
+000010E3                           126  
+000010E3                           127          END     START           end of program with start address specified
 
 No errors detected
 No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ADDER1              1092
+ADDER2              1096
+CRLF                10E0
+NEWLINE             10AE
+NUM1                10
+NUM2                C
+PROMPT              10C4
+RESULT              10D3
+START               1000
+SUM                 8
