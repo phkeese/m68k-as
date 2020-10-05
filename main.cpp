@@ -4,6 +4,7 @@
 int assembleFile(const char fileName[], const char tempName[], const AnsiString workName);
 
 extern bool objFlag;
+extern bool listFlag;
 
 int main(int argc, char **argv) {
 	std::cout << "Hell awaits in legacy!\n";
@@ -12,6 +13,7 @@ int main(int argc, char **argv) {
 	AnsiString workname = argv[3];
 	
 	objFlag = true;
+	listFlag = true;
 	std::cout << "Source: " << sourcename << ", Temp: " << tempname << ", Work: " << workname << "\n";
 	assembleFile(sourcename.c_str(), tempname.c_str(), workname);
 }
