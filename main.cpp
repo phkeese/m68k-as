@@ -14,6 +14,11 @@ extern bool WARflag;           // true shows Warnings during assembly
 
 int main(int argc, char **argv) {
 	std::cout << "Hell awaits in legacy!\n";
+	if (argc != 4) {
+		std::cout << "Usage: m68k-as <source-file> <temp-file> <work-name>\n";
+		return 1;
+	}
+
 	AnsiString sourcename = argv[1];
 	AnsiString tempname = argv[2];
 	AnsiString workname = argv[3];
@@ -30,4 +35,6 @@ int main(int argc, char **argv) {
 
 	std::cout << "Source: " << sourcename << ", Temp: " << tempname << ", Work: " << workname << "\n";
 	assembleFile(sourcename.c_str(), tempname.c_str(), workname);
+
+	return 0;
 }
