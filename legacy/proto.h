@@ -17,6 +17,9 @@
 
 /* ANSI C function prototype definitions */
 
+#include <string>
+
+using std::string;
 
 int	processFile(void);
 
@@ -160,7 +163,7 @@ int     asmMacro(int, char *, char *, int *);   //ck
 
 int     asmStructure(int, char *, char *, int *);  //ck
 
-int     tokenize(char* , char*, char*[], char*);  //ck
+int     tokenize(char* , string, char*[], char*);  //ck
 
 int     optCRE();                               //ck
 

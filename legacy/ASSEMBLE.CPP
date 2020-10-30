@@ -81,8 +81,9 @@
 #include "mainS.h"
 #include "textS.h"
 #include "editorOptions.h"
+#include <string>
 
-
+using std::string;
 
 extern int loc;		// The assembler's location counter
 extern int sectionLoc[16];     // section locations
@@ -822,14 +823,14 @@ int pickMask(int size, flavor *flavorPtr, int *errorPtr) {
 //      token[] = pointers to tokens
 //      tokens = new string full of tokens
 // Returns number of tokens extracted.
-int tokenize(char *instr, char *delim, char *token[], char *tokens) {
+int tokenize(char *instr, string delim, char *token[], char *tokens) {
 	int i, size, tokN = 0, tokCount = 0;
 	char *start;
 	int parenCount;
 	bool dotDelimiter;
 	bool quoted = false;
 
-	dotDelimiter = (strchr(delim, '.')); // set true if . is a delimiter
+	dotDelimiter = delim.find('.') != string::npos; // set true if . is a delimiter
 	// clear token pointers
 	for (i = 0; i < MAXT; i++) {
 		token[i] = empty_string; // this makes the pointer point to empty
@@ -870,7 +871,7 @@ int tokenize(char *instr, char *delim, char *token[], char *tokens) {
 			// while more chars AND (not delimiter OR inside parens) AND token
 			// size limit not reached OR quoted
 			while (*instr &&
-				   (!(strchr(delim, *instr)) || parenCount > 0 || quoted) &&
+				   (!(delim.find(*instr) != string::npos) || parenCount > 0 || quoted) &&
 				   (size < MAX_SIZE - 1)) {
 				// if found '
 				if (*instr == '\'') {
