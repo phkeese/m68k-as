@@ -17,176 +17,176 @@
 
 /* ANSI C function prototype definitions */
 
-int processFile(void);
 
-int assemble(const char *, int *);
+int	processFile(void);
 
-int createCode(char *, int *);
+int	assemble(const char *, int *);
 
-int assembleFile(const char fileName[], const char tempName[],
-				 const AnsiString workName);
+int     createCode(char *, int *);
 
-char *fieldParse(char *p, opDescriptor *d, int *errorPtr);
+int     assembleFile(const char fileName[], const char tempName[], const AnsiString workName);
 
-int pickMask(int, flavor *, int *);
+char    *fieldParse(char *p, opDescriptor *d, int *errorPtr);
 
-int move(int, int, opDescriptor *, opDescriptor *, int *);
+int	pickMask(int, flavor *, int *);
 
-int zeroOp(int, int, opDescriptor *, opDescriptor *, int *);
+int	move(int, int, opDescriptor *, opDescriptor *, int *);
 
-int oneOp(int, int, opDescriptor *, opDescriptor *, int *);
+int	zeroOp(int, int, opDescriptor *, opDescriptor *, int *);
 
-int arithReg(int, int, opDescriptor *, opDescriptor *, int *);
+int	oneOp(int, int, opDescriptor *, opDescriptor *, int *);
 
-int arithAddr(int, int, opDescriptor *, opDescriptor *, int *);
+int	arithReg(int, int, opDescriptor *, opDescriptor *, int *);
 
-int bitField(int, int, opDescriptor *, opDescriptor *, int *);
+int	arithAddr(int, int, opDescriptor *, opDescriptor *, int *);
 
-int immedInst(int, int, opDescriptor *, opDescriptor *, int *);
+int	bitField(int, int, opDescriptor *, opDescriptor *, int *);
 
-int quickMath(int, int, opDescriptor *, opDescriptor *, int *);
+int	immedInst(int, int, opDescriptor *, opDescriptor *, int *);
 
-int movep(int, int, opDescriptor *, opDescriptor *, int *);
+int	quickMath(int, int, opDescriptor *, opDescriptor *, int *);
 
-int moves(int, int, opDescriptor *, opDescriptor *, int *);
+int	movep(int, int, opDescriptor *, opDescriptor *, int *);
 
-int moveReg(int, int, opDescriptor *, opDescriptor *, int *);
+int	moves(int, int, opDescriptor *, opDescriptor *, int *);
 
-int staticBit(int, int, opDescriptor *, opDescriptor *, int *);
+int	moveReg(int, int, opDescriptor *, opDescriptor *, int *);
 
-int movec(int, int, opDescriptor *, opDescriptor *, int *);
+int	staticBit(int, int, opDescriptor *, opDescriptor *, int *);
 
-int trap(int, int, opDescriptor *, opDescriptor *, int *);
+int	movec(int, int, opDescriptor *, opDescriptor *, int *);
 
-int branch(int, int, opDescriptor *, opDescriptor *, int *);
+int	trap(int, int, opDescriptor *, opDescriptor *, int *);
 
-int moveq(int, int, opDescriptor *, opDescriptor *, int *);
+int	branch(int, int, opDescriptor *, opDescriptor *, int *);
 
-int immedToCCR(int, int, opDescriptor *, opDescriptor *, int *);
+int	moveq(int, int, opDescriptor *, opDescriptor *, int *);
 
-int immedWord(int, int, opDescriptor *, opDescriptor *, int *);
+int	immedToCCR(int, int, opDescriptor *, opDescriptor *, int *);
 
-int dbcc(int, int, opDescriptor *, opDescriptor *, int *);
+int	immedWord(int, int, opDescriptor *, opDescriptor *, int *);
 
-int scc(int, int, opDescriptor *, opDescriptor *, int *);
+int	dbcc(int, int, opDescriptor *, opDescriptor *, int *);
 
-int shiftReg(int, int, opDescriptor *, opDescriptor *, int *);
+int	scc(int, int, opDescriptor *, opDescriptor *, int *);
 
-int exg(int, int, opDescriptor *, opDescriptor *, int *);
+int	shiftReg(int, int, opDescriptor *, opDescriptor *, int *);
 
-int twoReg(int, int, opDescriptor *, opDescriptor *, int *);
+int	exg(int, int, opDescriptor *, opDescriptor *, int *);
 
-int oneReg(int, int, opDescriptor *, opDescriptor *, int *);
+int	twoReg(int, int, opDescriptor *, opDescriptor *, int *);
 
-int moveUSP(int, int, opDescriptor *, opDescriptor *, int *);
+int	oneReg(int, int, opDescriptor *, opDescriptor *, int *);
 
-int link(int, int, opDescriptor *, opDescriptor *, int *);
+int	moveUSP(int, int, opDescriptor *, opDescriptor *, int *);
 
-int output(int, int);
+int	link(int, int, opDescriptor *, opDescriptor *, int *);
 
-int effAddr(opDescriptor *);
+int	output(int, int);
 
-int extWords(opDescriptor *, int, int *);
+int	effAddr(opDescriptor *);
 
-int org(int, char *, char *, int *);
+int	extWords(opDescriptor *, int, int *);
 
-int offset(int, char *, char *, int *);
+int	org(int, char *, char *, int *);
 
-int funct_end(int, char *, char *, int *);
+int	offset(int, char *, char *, int *);
 
-int equ(int, char *, char *, int *);
+int	funct_end(int, char *, char *, int *);
 
-int set(int, char *, char *, int *);
+int	equ(int, char *, char *, int *);
 
-int section(int, char *, char *, int *);
+int	set(int, char *, char *, int *);
 
-int simhalt(int, char *, char *, int *);
+int     section(int, char *, char *, int *);
 
-int page(int, char *, char *, int *);
+int     simhalt(int, char *, char *, int *);
 
-int dc(int, char *, char *, int *);
+int     page(int, char *, char *, int *);
 
-char *collect(char *, char *);
+int	dc(int, char *, char *, int *);
 
-int dcb(int, char *, char *, int *);
+char	*collect(char *, char *);
 
-int ds(int, char *, char *, int *);
+int	dcb(int, char *, char *, int *);
 
-int printError(FILE *, int, int);
+int	ds(int, char *, char *, int *);
 
-char *eval(char *, int *, bool *, int *);
+int	printError(FILE *, int, int);
 
-char *evalNumber(char *, int *, bool *, int *);
+char	*eval(char *, int *, bool *, int *);
 
-int precedence(char);
+char	*evalNumber(char *, int *, bool *, int *);
 
-int doOp(int, int, char, int *);
+int	precedence(char);
 
-char *instLookup(char *, instruction *(*), char *, int *);
+int	doOp(int, int, char, int *);
 
-int initList(const char *);
+char	*instLookup(char *, instruction *(*), char *, int *);
 
-int listLine(const char[], char[] = "\0");
+int	initList(const char *);
 
-int listLoc(void);
+int	listLine(const char[], char[] = "\0");
 
-int listCond(bool);
+int	listLoc(void);
 
-int listError(char *lineNum, char *errMsg);
+int     listCond(bool);
 
-int listText(const char *text);
+int     listError(char *lineNum, char *errMsg);
 
-int listObj(int, int);
+int     listText(const char *text);
 
-int strcap(char *, const char *);
+int	listObj(int, int);
 
-char *skipSpace(char *);
+int	strcap(char *, const char *);
 
-int setFlags(int, char *[], int *);
+char	*skipSpace(char *);
 
-// int	getopt(int, char *[], char *, int *);
+int	setFlags(int, char *[], int *);
 
-int help(void);
+//int	getopt(int, char *[], char *, int *);
 
-int movem(int, char *, char *, int *);
+int	help(void);
 
-int reg(int, char *, char *, int *);
+int	movem(int, char *, char *, int *);
 
-int opt(int, char *, char *, int *);
+int	reg(int, char *, char *, int *);
 
-int macro(int, char *, char *, int *); // ck
+int	opt(int, char *, char *, int *);
 
-int asmMacro(int, char *, char *, int *); // ck
+int     macro(int, char *, char *, int *);      //ck
 
-int asmStructure(int, char *, char *, int *); // ck
+int     asmMacro(int, char *, char *, int *);   //ck
 
-int tokenize(char *, char *, char *[], char *); // ck
+int     asmStructure(int, char *, char *, int *);  //ck
 
-int optCRE(); // ck
+int     tokenize(char* , char*, char*[], char*);  //ck
 
-char *evalList(char *, unsigned short *, int *);
+int     optCRE();                               //ck
 
-int initObj(const char *);
+char	*evalList(char *, unsigned short *, int *);
 
-int outputObj(int, int, int);
+int	initObj(const char *);
 
-int checkValue(int);
+int	outputObj(int, int, int);
 
-int finishList();
+int	checkValue(int);
 
-int finishObj(void);
+int     finishList();
 
-char *opParse(char *, opDescriptor *, int *);
+int	finishObj(void);
+
+char	*opParse(char *, opDescriptor *, int *);
 
 symbolDef *lookup(char *, int, int *);
 
-int hash_symbol(char *);
+int	hash_symbol(char *);
 
 symbolDef *define(char *, int, bool, bool, int *);
 
 void clearSymbols();
 
-int writeObj(void);
+int	writeObj(void);
 
 int include(int, char *, char *, int *);
 
