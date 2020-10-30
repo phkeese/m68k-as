@@ -182,7 +182,7 @@ typedef struct {
 
 /* Structure for the instruction table */
 typedef struct {
-	string mnemonic;		/* Mnemonic */
+	const string mnemonic;		/* Mnemonic */
 	flavor *flavorPtr;	/* Pointer to flavor list */
 	char flavorCount;	/* Number of flavors in flavor list */
 	bool parseFlag;		/* Should assemble() parse the operands? */
