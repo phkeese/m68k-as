@@ -25,6 +25,9 @@
 #include <stdlib.h>
 // #include <malloc.h>
 #include <vcl.h>
+#include <string>
+
+using std::string;
 
 /* Define a couple of useful tests */
 
@@ -179,7 +182,7 @@ typedef struct {
 
 /* Structure for the instruction table */
 typedef struct {
-	char *mnemonic;		/* Mnemonic */
+	string mnemonic;		/* Mnemonic */
 	flavor *flavorPtr;	/* Pointer to flavor list */
 	char flavorCount;	/* Number of flavors in flavor list */
 	bool parseFlag;		/* Should assemble() parse the operands? */

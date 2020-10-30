@@ -102,7 +102,7 @@ char *instLookup(char *p, instruction *(*instPtrPtr), char *sizePtr, int *errorP
     // search for opcode in instTable
     do {
       mid = (hi + lo) / 2;
-      cmp = strcmp(opcode, instTable[mid].mnemonic);
+      cmp = strcmp(opcode, instTable[mid].mnemonic.c_str());
       if (cmp > 0)
         lo = mid + 1;
       else if (cmp < 0)
