@@ -11,7 +11,7 @@ S-Record files, like Edit68K does.
 ## Overview of what needs to be done:
 
 - [x] Provide substitute classes and functions to compile assembler
-- [ ] Reimplement listing file
+- [x] Reimplement listing file
 - [ ] Remove unused code (mostly UI)
 - [ ] Remove all references to UI code
 - [ ] Rewrite to C++11 and decouple assembler from file streams
