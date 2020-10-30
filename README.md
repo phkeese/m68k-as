@@ -46,3 +46,5 @@ The temporary file can be deleted.
 
 This project is based on the [Easy68K project](https://github.com/ProfKelly/EASy68K).
 
+Honestly, I do not know how to write a copyright notice or extend the original,
+so I will just copy them to this repository, add my name and hope that is enough.
