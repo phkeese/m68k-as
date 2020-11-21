@@ -11,6 +11,6 @@ char *itoa(int value, char * str, int base) {
 	ss << std::setbase(base);
 	ss << value;
 	const char *cstr = ss.str().c_str();
-	stpcpy(str, cstr);
+	strcpy(str, cstr);
 	return str;
 }
